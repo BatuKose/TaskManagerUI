@@ -314,3 +314,56 @@ async function deleteRole() {
 document.getElementById("RoleDelete").addEventListener("click",()=>{
     deleteRole()
 })
+document.getElementById("RoleUpdate").addEventListener("click",()=>{
+    if(!roleId) 
+        {
+            alert("rol seçiniz")
+            return
+        }
+    document.getElementById("rolModal").style.display = "block";
+})
+document.getElementById("rolbtnClose").addEventListener("click",()=>
+{
+    document.getElementById("rolModal").style.display = "none";
+});
+document.getElementById("rolbtnSave").addEventListener("click",()=>
+{
+    rolGuncelleAsync()
+    document.getElementById("rolModal").style.display = "none";
+});
+
+async function rolGuncelleAsync() {
+   try {
+
+        const roleText = document.getElementById("txtRoleName").value;
+
+        if (!roleText) {
+            alert("Yeni rol ismi giriniz");
+            return;
+        }
+
+        const istek = await fetch(
+            `http://localhost:1000/Role/${roleId}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    roleName: roleText
+                })
+            }
+        );
+
+        if (!istek.ok) {
+            const data = await istek.json();
+            throw new Error(data.Message);
+        }
+
+        alert("Rol güncellendi");
+        await loadRoles();
+
+   } catch (err) {
+        alert(err.message);
+   }
+}
