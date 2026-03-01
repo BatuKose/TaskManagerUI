@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Yönetimi</title>
+   <link rel="stylesheet" href="css/SistemYonetimi.css">
+</head>
+<body>
+
+<button id="btnSoftDelete">Pasif/Aktif Yap</button>
+<button id="btnOpenModal">Yeni Kullanıcı</button>
+<button id="btnUpdateOpenModal">Kullanıcı Güncelle</button>
+
+<label for="chkPasif">Aktif / Pasif</label>
+<input type="checkbox" id="chkPasif" checked>
+
+<table id="userTable" border="1">
+    <thead>
+        <tr>
+            <th>Kullanıcı Adı</th>
+            <th>Kullanıcı Rol</th>
+            <th>Kullanıcı Mail</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<!-- Onay Modal -->
+<div id="confirmModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);">
+    <div style="background:white; padding:20px; width:300px; margin:200px auto; text-align:center;">
+        <p>İşleme devam etmek istiyor musun?</p>
+        <button id="btnYes">Evet</button>
+        <button id="btnNo">Hayır</button>
+    </div>
+</div>
+
+<!-- Kullanıcı Modal -->
+<div id="userModal" style="display:none; border:1px solid black; padding:15px; width:300px;">
+    <h3>Kullanıcı Tanımla</h3>
+
+    <div>
+        <label>Kullanıcı Adı</label>
+        <input type="text" id="txtUserName">
+    </div>
+
+    <div>
+        <label>Email</label>
+        <input type="text" id="txtEmail">
+    </div>
+
+    <div>
+        <label>Şifre</label>
+        <input type="password" id="txtPassword">
+    </div>
+
+    <div>
+        <label>Rol</label>
+        <select id="cmbRole">
+        </select>
+    </div>
+
+    <br>
+    <button id="btnSave">Kaydet</button>
+    <button id="btnClose">Kapat</button>
+</div>
+<!--Kullanıcı update modal-->
+<div id="userUpdateModal" style="display:none; border:1px solid black; padding:15px; width:300px;">
+    <h3>Kullanıcı güncelle</h3>
+    <div>
+        <label>Kullanıcı Adı</label>
+        <input type="text" id="UpdatetxtUserName">
+    </div>
+
+    <div>
+        <label>Email</label>
+        <input type="text" id="UpdatetxtEmail">
+    </div>
+
+    <div>
+        <label>Şifre</label>
+        <input type="password" id="UpdatetxtPassword">
+    </div>
+
+    <div>
+        <label>Rol</label>
+        <select id="UpdatecmbRole">   
+        </select>
+    </div>
+
+    <br>
+    <button id="UpdatebtnSave">Kaydet</button>
+    <button id="UpdatebtnClose">Kapat</button>
+</div>
+
+<script src="scripts/SistemYonetimi.js"></script>
+</body>
+</html>
