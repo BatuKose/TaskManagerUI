@@ -30,7 +30,8 @@ async function UpdateloadRoles () {
         
         if(!istek.ok)
         {
-            throw new Error(await istek.text());
+            const errorText = await istek.json();
+            throw new Error(errorText.Message);
         }
         const select=document.getElementById("UpdatecmbRole");
         select.innerHTML="";
@@ -51,7 +52,9 @@ async function CreateloadRoles () {
         
         if(!istek.ok)
         {
-            throw new Error(await istek.text());
+              const errorText = await istek.json();
+            throw new Error(errorText.Message);
+
         }
         const select=document.getElementById("cmbRole");
         select.innerHTML="";
@@ -147,7 +150,12 @@ async function softDeleteUser() {
         const res = await fetch(`http://localhost:1000/api/users/softdelete?id=${selectedUserId}`, {
             method: "PATCH"
         });
-        if (!res.ok) throw new Error(await res.text());
+        if (!res.ok)
+            {
+
+                const res = await istek.json();
+            throw new Error(res.Message);    
+            } 
     } catch (err) {
         alert(err.message);
     }
