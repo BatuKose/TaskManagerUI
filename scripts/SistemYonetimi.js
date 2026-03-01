@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadUsers(true); 
     await UpdateloadRoles();
     await CreateloadRoles ();
+    await loadRoles();
 });
 
 document.getElementById("chkPasif").addEventListener("change", e => {
@@ -80,6 +81,41 @@ function fillTable(data) {
     });
 }
 
+async function loadRoles()
+{
+    try
+    {
+        var istek=await fetch(`http://localhost:1000/Role/GetRoles`);
+        var data= await istek.json();
+        fillRoleTable(data)
+        console.log(data)
+        if(!istek.ok)
+        {
+            throw new Error(await istek.text());
+        }
+    }
+    catch(err)
+    {
+        alert(err.message);
+    }
+}
+function fillRoleTable(data)
+{   
+    const tbody = document.querySelector("#roleTable tbody");
+    tbody.innerHTML = "";
+
+    data.forEach(role => {
+        const tr = document.createElement("tr");
+        tr.dataset.id=role.id;
+        tr.innerHTML = `
+            <td>${role.id}</td>
+            <td>${role.roleName}</td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
+
 let selectedUserId = null;
 document.querySelector("#userTable tbody").addEventListener("click", e => {
     const tr = e.target.closest("tr");
@@ -88,6 +124,7 @@ document.querySelector("#userTable tbody").addEventListener("click", e => {
     document.querySelectorAll("#userTable tbody tr").forEach(r => r.style.background = "");
     tr.style.background = "#ddd";
     selectedUserId = tr.dataset.userId;
+    getUserAsync()
 });
 
 document.getElementById("btnSoftDelete").addEventListener("click", () => {
@@ -231,4 +268,41 @@ async function userUpdateAsync() {
 document.getElementById("UpdatebtnSave").addEventListener("click",()=>
 {
    userUpdateAsync()
+})
+let roleId=null;
+document.querySelector("#roleTable tbody").addEventListener("click",function(e){
+    const tr=e.target.closest("tr");
+    if(!tr) return;
+    roleId=tr.dataset.id;
+    console.log(roleId)
+});
+
+async function deleteRole() {
+    try {
+
+        if (!roleId) {
+            alert("Role seçiniz");
+            return;
+        }
+
+        const istek = await fetch(
+            `http://localhost:1000/Role?id=${roleId}`,
+            { method: "DELETE" }
+        );
+
+        if (!istek.ok) {
+            const errorText = await istek.json();
+            throw new Error(errorText.Message);
+        }
+
+        alert("Rol silindi");
+        await loadRoles();
+
+    } catch (err) {
+        alert("Hata: " + err.message);
+    }
+}
+
+document.getElementById("RoleDelete").addEventListener("click",()=>{
+    deleteRole()
 })
