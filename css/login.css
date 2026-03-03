@@ -1,0 +1,94 @@
+/* Genel ayarlar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    height: 100vh;
+    background: linear-gradient(135deg, #0f4c81, #1c7ed6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Login kart */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+.login-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 40px 30px;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.login-card h1 {
+    margin-bottom: 10px;
+    color: #0f4c81;
+}
+
+.login-card p {
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.login-card label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+}
+
+.login-card input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.login-card input:focus {
+    border-color: #1c7ed6;
+    outline: none;
+    box-shadow: 0 0 5px rgba(28,126,214,0.4);
+}
+
+.login-card button {
+    width: 100%;
+    padding: 12px;
+    background-color: #1c7ed6;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login-card button:hover {
+    background-color: #0f4c81;
+}
+
+.login-card .forgot {
+    margin-top: 15px;
+}
+
+.login-card .forgot a {
+    color: #1c7ed6;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.login-card .forgot a:hover {
+    text-decoration: underline;
+}

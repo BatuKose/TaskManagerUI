@@ -16,7 +16,7 @@ label[for="chkPasif"] {
 
 /* Butonlar */
 button {
-    background-color: #6c5ce7;
+    background-color:#0f4c81;
     color: #ffffff;
     border: none;
     padding: 10px 18px;
@@ -26,7 +26,7 @@ button {
     transition: background-color 0.2s ease, transform 0.1s ease;
 }
 button:hover {
-    background-color: #4e42b0;
+    background-color: #0f4c81;
     transform: scale(1.03);
 }
 
@@ -42,7 +42,7 @@ table {
 }
 
 thead th {
-    background-color: #6c5ce7;
+    background-color: #0f4c81;
     color: white;
     padding: 12px;
     text-align: left;
