@@ -323,12 +323,15 @@ document.querySelector("#InsertrolbtnSave").addEventListener("click", () => {
 // Yeni rol ekleme işlemi
 async function RoleInsertAsync() {
     try {
+        const token = localStorage.getItem("authToken");
         const roleText = document.getElementById("InserttxtRoleName").value;
         if (!roleText) return alert("Yeni rol ismi giriniz");
 
         const istek = await fetch("http://localhost:1000/Role", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,
+                "Authorization": `Bearer ${token}`
+            },
             body: JSON.stringify({ roleName: roleText })
         });
         if (!istek.ok) {
