@@ -18,11 +18,12 @@ async function Login() {
 
         const data = await istek.json();
         const token=data.token;
-        sessionStorage.setItem("authToken",token)
+        localStorage.setItem("authToken",token)
            console.log(data); 
-//         if (token) {
-//         window.location.href = "SistemYonetimi.html"; 
-// }
+        if (token) {
+            localStorage.setItem("authToken", token);
+        window.location.href = "dashboard.html";
+    }
         if (!istek.ok) {
             throw new Error(data.Message || "Beklenmedik hata oluştu");
         }
