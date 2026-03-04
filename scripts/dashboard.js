@@ -1,3 +1,4 @@
+  console.log(localStorage.getItem("authToken"))
   if (!localStorage.getItem("authToken")) {
         window.location.href = "login.html";
     }

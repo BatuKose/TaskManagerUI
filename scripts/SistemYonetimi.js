@@ -1,3 +1,22 @@
+// =============================================
+// TOKEN'LI FETCH HELPER
+// =============================================
+function authFetch(url, options = {}) {
+    const token = localStorage.getItem("authToken");
+    const { headers, ...rest } = options;
+    return fetch(url, {
+        ...rest,
+        headers: {
+            "Content-Type": "application/json",
+            ...(token ? { "Authorization": `Bearer ${token}` } : {}),
+            ...headers
+        }
+    });
+}
+
+// =============================================
+// SAYFA YÜKLENDİĞİNDE
+// =============================================
 document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("chkPasif").checked = false;
     await loadUsers(true);
@@ -12,54 +31,18 @@ document.getElementById("chkPasif").addEventListener("change", e => {
     loadUsers(!pasifGoster);
 });
 
+// =============================================
+// KULLANICI İŞLEMLERİ
+// =============================================
+
 // Kullanıcıları yükle
 async function loadUsers(aktifMi = true) {
     try {
         const url = `http://localhost:1000/api/users/userDetails?aktifMi=${aktifMi}`;
-        const response = await fetch(url);
+        const response = await authFetch(url);
         if (!response.ok) throw new Error(await response.text());
         const data = await response.json();
         fillTable(data);
-    } catch (err) {
-        alert(err.message);
-    }
-}
-
-// Roller dropdownlarını yükle (Update)
-async function UpdateloadRoles() {
-    try {
-        const istek = await fetch("http://localhost:1000/Role/GetRoles");
-        const roles = await istek.json();
-        if (!istek.ok) throw new Error(roles.Message);
-        
-        const select = document.getElementById("UpdatecmbRole");
-        select.innerHTML = "";
-        roles.forEach(role => {
-            const option = document.createElement("option");
-            option.value = role.id;
-            option.text = role.roleName;
-            select.appendChild(option);
-        });
-    } catch (err) {
-        alert(err.message);
-    }
-}
-
-// Roller dropdownlarını yükle (Create)
-async function CreateloadRoles() {
-    try {
-        const istek = await fetch("http://localhost:1000/Role/GetRoles");
-        const roles = await istek.json();
-        if (!istek.ok) throw new Error(roles.Message);
-
-        const select = document.getElementById("cmbRole");
-        select.innerHTML = "";
-        roles.forEach(role => {
-            const option = document.createElement("option");
-            option.value = role.id;
-            option.text = role.roleName;
-            select.appendChild(option);
-        });
     } catch (err) {
         alert(err.message);
     }
@@ -76,34 +59,6 @@ function fillTable(data) {
             <td>${user.userName}</td>
             <td>${user.roleName}</td>
             <td>${user.email}</td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-// Roller tablosunu yükle
-async function loadRoles() {
-    try {
-        const istek = await fetch("http://localhost:1000/Role/GetRoles");
-        const data = await istek.json();
-        if (!istek.ok) throw new Error(await istek.text());
-        fillRoleTable(data);
-        console.log(data);
-    } catch (err) {
-        alert(err.message);
-    }
-}
-
-// Roller tablosunu doldur
-function fillRoleTable(data) {
-    const tbody = document.querySelector("#roleTable tbody");
-    tbody.innerHTML = "";
-    data.forEach(role => {
-        const tr = document.createElement("tr");
-        tr.dataset.id = role.id;
-        tr.innerHTML = `
-            <td>${role.id}</td>
-            <td>${role.roleName}</td>
         `;
         tbody.appendChild(tr);
     });
@@ -140,7 +95,7 @@ document.getElementById("btnYes").addEventListener("click", async () => {
 
 async function softDeleteUser() {
     try {
-        const res = await fetch(`http://localhost:1000/api/users/softdelete?id=${selectedUserId}`, {
+        const res = await authFetch(`http://localhost:1000/api/users/softdelete?id=${selectedUserId}`, {
             method: "PATCH"
         });
         if (!res.ok) {
@@ -168,9 +123,8 @@ async function UserSaveAsync() {
         const Ipassword = document.getElementById("txtPassword").value;
         const IroleId = Number(document.getElementById("cmbRole").value);
 
-        const istek = await fetch("http://localhost:1000/api/users", {
+        const istek = await authFetch("http://localhost:1000/api/users", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 userName: IuserName,
                 email: Iemail,
@@ -207,10 +161,10 @@ async function getUserAsync() {
         document.getElementById("userUpdateModal").style.display = "none";
         return;
     }
-    const res = await fetch(`http://localhost:1000/api/users/getUserById?id=${selectedUserId}`);
+    const res = await authFetch(`http://localhost:1000/api/users/getUserById?id=${selectedUserId}`);
     if (!res.ok) throw new Error(await res.text());
     const user = await res.json();
-    
+
     document.getElementById("UpdatetxtUserName").value = user.userName;
     document.getElementById("UpdatetxtEmail").value = user.email;
     document.getElementById("UpdatetxtPassword").value = user.password;
@@ -227,9 +181,8 @@ async function userUpdateAsync() {
     const IroleId = Number(document.getElementById("UpdatecmbRole").value);
 
     try {
-        const istek = await fetch(`http://localhost:1000/api/users/updateUser?id=${selectedUserId}`, {
+        const istek = await authFetch(`http://localhost:1000/api/users/updateUser?id=${selectedUserId}`, {
             method: "PATCH",
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 userName: IuserName,
                 email: Iemail,
@@ -247,6 +200,78 @@ async function userUpdateAsync() {
 
 document.getElementById("UpdatebtnSave").addEventListener("click", userUpdateAsync);
 
+// =============================================
+// ROL İŞLEMLERİ
+// =============================================
+
+// Roller dropdownlarını yükle (Update)
+async function UpdateloadRoles() {
+    try {
+        const istek = await authFetch("http://localhost:1000/Role/GetRoles");
+        const roles = await istek.json();
+        if (!istek.ok) throw new Error(roles.Message);
+
+        const select = document.getElementById("UpdatecmbRole");
+        select.innerHTML = "";
+        roles.forEach(role => {
+            const option = document.createElement("option");
+            option.value = role.id;
+            option.text = role.roleName;
+            select.appendChild(option);
+        });
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+// Roller dropdownlarını yükle (Create)
+async function CreateloadRoles() {
+    try {
+        const istek = await authFetch("http://localhost:1000/Role/GetRoles");
+        const roles = await istek.json();
+        if (!istek.ok) throw new Error(roles.Message);
+
+        const select = document.getElementById("cmbRole");
+        select.innerHTML = "";
+        roles.forEach(role => {
+            const option = document.createElement("option");
+            option.value = role.id;
+            option.text = role.roleName;
+            select.appendChild(option);
+        });
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+// Roller tablosunu yükle
+async function loadRoles() {
+    try {
+        const istek = await authFetch("http://localhost:1000/Role/GetRoles");
+        const data = await istek.json();
+        if (!istek.ok) throw new Error(await istek.text());
+        fillRoleTable(data);
+        console.log(data);
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+// Roller tablosunu doldur
+function fillRoleTable(data) {
+    const tbody = document.querySelector("#roleTable tbody");
+    tbody.innerHTML = "";
+    data.forEach(role => {
+        const tr = document.createElement("tr");
+        tr.dataset.id = role.id;
+        tr.innerHTML = `
+            <td>${role.id}</td>
+            <td>${role.roleName}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
 // Role seçimi
 let roleId = null;
 document.querySelector("#roleTable tbody").addEventListener("click", e => {
@@ -261,7 +286,9 @@ async function deleteRole() {
     try {
         if (!roleId) return alert("Role seçiniz");
 
-        const istek = await fetch(`http://localhost:1000/Role?id=${roleId}`, { method: "DELETE" });
+        const istek = await authFetch(`http://localhost:1000/Role?id=${roleId}`, {
+            method: "DELETE"
+        });
         if (!istek.ok) {
             const data = await istek.json();
             throw new Error(data.Message);
@@ -293,9 +320,8 @@ async function rolGuncelleAsync() {
         const roleText = document.getElementById("txtRoleName").value;
         if (!roleText) return alert("Yeni rol ismi giriniz");
 
-        const istek = await fetch(`http://localhost:1000/Role/${roleId}`, {
+        const istek = await authFetch(`http://localhost:1000/Role/${roleId}`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ roleName: roleText })
         });
         if (!istek.ok) {
@@ -323,15 +349,11 @@ document.querySelector("#InsertrolbtnSave").addEventListener("click", () => {
 // Yeni rol ekleme işlemi
 async function RoleInsertAsync() {
     try {
-        const token = localStorage.getItem("authToken");
         const roleText = document.getElementById("InserttxtRoleName").value;
         if (!roleText) return alert("Yeni rol ismi giriniz");
 
-        const istek = await fetch("http://localhost:1000/Role", {
+        const istek = await authFetch("http://localhost:1000/Role", {
             method: "POST",
-            headers: { "Content-Type": "application/json" ,
-                "Authorization": `Bearer ${token}`
-            },
             body: JSON.stringify({ roleName: roleText })
         });
         if (!istek.ok) {
@@ -344,3 +366,4 @@ async function RoleInsertAsync() {
         alert(err.message);
     }
 }
+console.log(localStorage.getItem("authToken"))
