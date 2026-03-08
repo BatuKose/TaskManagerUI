@@ -1,15 +1,15 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    await BütünIsleriGetirAsync();
-    document.getElementById("chkPasif").addEventListener("change",e=>{
-    const bitenGoster=e.target.checed;
-   // BütünIsleriGetirAsync(!bitenGoster)
-    BütünIsleriGetirAsync()
-})
+    await BütünIsleriGetirAsync(true); 
+
+    document.getElementById("chkPasif").addEventListener("change", e => {
+        const bitenGoster = e.target.checked; 
+        BütünIsleriGetirAsync(bitenGoster);   
+    });
 });
 
-async function BütünIsleriGetirAsync() {
+async function BütünIsleriGetirAsync(bitenGoster = true) {
     try {
-        const istek = await fetch(`http://localhost:1000/api/Job/BütünisBaslık`);
+        const istek = await fetch(`http://localhost:1000/api/Job/BütünisBaslık?bitmisMi=${bitenGoster}`);
         const data = await istek.json();
 
         if (!istek.ok) {
@@ -59,5 +59,4 @@ document.querySelector("#BütünIsler tbody").addEventListener("click", e => {
     tr.style.background = "#ddd"; 
     selectedJobId = tr.dataset.dosyaId;
 
-    console.log(selectedJobId); 
 });
