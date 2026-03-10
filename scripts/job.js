@@ -1,12 +1,36 @@
+let gelUserId = null;
+
 document.addEventListener("DOMContentLoaded", async () => {
+    const token = localStorage.getItem("authToken");
+    gelUserId = getUserIdFromToken(token);
+    console.log(gelUserId);
+
     await BütünIsleriGetirAsync(true); 
 
     document.getElementById("chkPasif").addEventListener("change", e => {
         const bitenGoster = e.target.checked; 
         BütünIsleriGetirAsync(bitenGoster);   
     });
+    kendiIsleriniGetir()
 });
 
+function getUserIdFromToken(token) {
+    if (!token) return null;
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.UserId;
+}
+
+
+async function BütünIsleriGetirAsync(bitenGoster) {
+    console.log(gelUserId); 
+}
+
+function getUserIdFromToken(token) {
+    if (!token) return null;
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.UserId;
+}
+  console.log(gelUserId);
 async function BütünIsleriGetirAsync(bitenGoster = true) {
     try {
         const istek = await fetch(`http://localhost:1000/api/Job/BütünisBaslık?bitmisMi=${bitenGoster}`);
@@ -90,5 +114,23 @@ async function IsBaslikSil()
     catch(err)
     {
         alert(err.message);
+    }
+}
+
+async function kendiIsleriniGetir() {
+    try {
+        const istek = await fetch(`http://localhost:1000/api/Job/Kendiİslerim?userId=${gelUserId}`); 
+        
+        if (!istek.ok) {
+            const hata = await istek.json();
+            throw new Error(hata.Message || "Bilinmeyen hata");
+        }
+
+        const data = await istek.json(); 
+        console.log(data);
+        return data;
+    }
+    catch (err) {
+        alert(err.message);   
     }
 }
