@@ -9,6 +9,7 @@
 <body>
     <label for="chkPasif">Biten işler/Devam eden işler</label>
     <input type="checkbox" id="chkPasif" checked>
+    <button id="deleteJobHeader">İş başlığı sil</button>
     <!--detaylı yapılmış iş tablosu-->
      <table id="BütünIsler" border="1">
     <thead>
@@ -25,7 +26,15 @@
         </tr>
     </thead>
         <tbody></tbody>
+       <!--İş silme onay--> 
     </table>
+        <div id="DeleteconfirmModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);">
+        <div style="background:white; padding:20px; width:300px; margin:200px auto; text-align:center;">
+            <p>İşleme devam etmek istiyor musun?</p>
+            <button id="DeletebtnYes">Evet</button>
+            <button id="DeletebtnNo">Hayır</button>
+        </div>
+    </div>
     <script src="scripts/job.js"></script>
 </body>
 </html>

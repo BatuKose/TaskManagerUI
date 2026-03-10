@@ -15,7 +15,7 @@ async function BütünIsleriGetirAsync(bitenGoster = true) {
         if (!istek.ok) {
             throw new Error(data.Message || data.message || "Bilinmeyen hata");
         }
-
+        console.log(data)
         fillTableJobAll(data);
     } catch (err) {
         alert(err.message);
@@ -58,5 +58,37 @@ document.querySelector("#BütünIsler tbody").addEventListener("click", e => {
 
     tr.style.background = "#ddd"; 
     selectedJobId = tr.dataset.dosyaId;
-
 });
+document.getElementById("deleteJobHeader").addEventListener("click",()=>
+{
+   if(!selectedJobId) return alert("İş başlığı seçin");
+   document.getElementById("DeleteconfirmModal").style.display = "block";
+  
+})
+document.querySelector("#DeleteconfirmModal #DeletebtnYes").addEventListener("click", () => {
+    IsBaslikSil();
+     document.getElementById("DeleteconfirmModal").style.display = "none";
+});
+document.querySelector("#DeleteconfirmModal #DeletebtnNo").addEventListener("click", () => {
+     document.getElementById("DeleteconfirmModal").style.display = "none";
+});
+async function IsBaslikSil()
+{
+    try
+    {
+        const istek=await fetch(`http://localhost:1000/api/Job/iş başlık?id=${selectedJobId}`,{
+        method:"DELETE"
+        });
+        alert("İş başlık silindi")
+        if(!istek.ok)
+        {
+            const data=await istek.json();
+            throw new Error(data.Message||"Bilinmeyen hata");
+        }
+        BütünIsleriGetirAsync();
+    }
+    catch(err)
+    {
+        alert(err.message);
+    }
+}
