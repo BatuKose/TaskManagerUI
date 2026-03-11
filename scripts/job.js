@@ -56,6 +56,30 @@ function fillTableJobAll(data) {
     const tablo = document.querySelector("#BütünIsler tbody");
     tablo.innerHTML = "";
     data.forEach(job => {
+        let durum=null;
+        if(job.status==1)
+        {
+            durum="Bekleniyor"
+        }else if(job.status==2)
+        {
+            durum="Karşılandı"
+        }
+        else if(job.status==3)
+        {
+            durum="Tamamlandı"
+        }
+        else if(job.status==4)
+        {
+            durum="iptal"
+        }
+        else if(job.status==5)
+        {
+            durum="Cezalı"
+        }
+        else
+        {
+            durum="tanımsız"
+        }
         const tr = document.createElement("tr");
         tr.dataset.dosyaId = job.dosyaId;
         tr.innerHTML = `
@@ -68,7 +92,7 @@ function fillTableJobAll(data) {
             <td>${job.userRoleName}</td>
             <td>${job.createdDate}</td>
             <td>${job.deadline}</td>
-            <td>${job.status}</td>
+            <td>${durum}</td>
         `;
         tablo.appendChild(tr);
     });
@@ -147,6 +171,30 @@ function fillTableKendiislerim(data) {
     const tablo = document.querySelector("#kendiIsler tbody");
     tablo.innerHTML = "";
     data.forEach(job => {
+        let durum=null;
+        if(job.status==1)
+        {
+            durum="Bekleniyor"
+        }else if(job.status==2)
+        {
+            durum="Karşılandı"
+        }
+        else if(job.status==3)
+        {
+            durum="Tamamlandı"
+        }
+        else if(job.status==4)
+        {
+            durum="iptal"
+        }
+        else if(job.status==5)
+        {
+            durum="Cezalı"
+        }
+        else
+        {
+            durum="tanımsız"
+        }
         const tr = document.createElement("tr");
         tr.dataset.dosyaId = job.dosyaId;
         tr.innerHTML = `
@@ -159,7 +207,7 @@ function fillTableKendiislerim(data) {
             <td>${job.userRoleName}</td>
             <td>${job.createdDate}</td>
             <td>${job.deadline}</td>
-            <td>${job.status}</td>
+            <td>${durum}</td>
         `; 
         tablo.appendChild(tr);
     });
