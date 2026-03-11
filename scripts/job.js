@@ -3,8 +3,6 @@ let gelUserId = null;
 document.addEventListener("DOMContentLoaded", async () => {
     const token = localStorage.getItem("authToken");
     gelUserId = getUserIdFromToken(token);
-    console.log(gelUserId);
-    console.log(token)
 
     await BütünIsleriGetirAsync(true); 
 
@@ -30,16 +28,13 @@ function getUserIdFromToken(token) {
 }
 
 
-async function BütünIsleriGetirAsync(bitenGoster) {
-    console.log(gelUserId); 
-}
 
 function getUserIdFromToken(token) {
     if (!token) return null;
     const payload = JSON.parse(atob(token.split('.')[1]));
     return payload.UserId;
 }
-  console.log(gelUserId);
+
 async function BütünIsleriGetirAsync(bitenGoster = true) {
     try {
         const istek = await fetch(`http://localhost:1000/api/Job/BütünisBaslık?bitmisMi=${bitenGoster}`);
@@ -48,7 +43,6 @@ async function BütünIsleriGetirAsync(bitenGoster = true) {
         if (!istek.ok) {
             throw new Error(data.Message || data.message || "Bilinmeyen hata");
         }
-        console.log(data)
         fillTableJobAll(data);
     } catch (err) {
         alert(err.message);
@@ -99,7 +93,9 @@ document.getElementById("deleteJobHeader").addEventListener("click",()=>
   
 })
 document.querySelector("#DeleteconfirmModal #DeletebtnYes").addEventListener("click", () => {
+
     IsBaslikSil();
+  
      document.getElementById("DeleteconfirmModal").style.display = "none";
 });
 document.querySelector("#DeleteconfirmModal #DeletebtnNo").addEventListener("click", () => {
@@ -112,12 +108,13 @@ async function IsBaslikSil()
         const istek=await fetch(`http://localhost:1000/api/Job/iş başlık?id=${selectedJobId}`,{
         method:"DELETE"
         });
-        alert("İş başlık silindi")
+       
         if(!istek.ok)
         {
             const data=await istek.json();
             throw new Error(data.Message||"Bilinmeyen hata");
         }
+         alert("İş başlık silindi")
         BütünIsleriGetirAsync();
     }
     catch(err)
@@ -136,12 +133,31 @@ async function kendiIsleriniGetir() {
         }
 
         const data = await istek.json(); 
-        console.log(data);
-        console.log(gelUserId)
+        fillTableKendiislerim(data)
         return data;
     }
     catch (err) {
         alert(err.message);   
     }
-
+}
+function fillTableKendiislerim(data) {
+    const tablo = document.querySelector("#kendiIsler tbody");
+    tablo.innerHTML = "";
+    data.forEach(job => {
+        const tr = document.createElement("tr");
+        tr.dataset.dosyaId = job.dosyaId;
+        tr.innerHTML = `
+            <td>${job.dosyaId}</td>
+            <td>${job.title}</td>
+            <td>${job.managerName}</td>
+            <td>${job.managerRoleName}</td>
+            <td>${job.managerRole}</td>
+            <td>${job.assignedUser}</td>
+            <td>${job.userRoleName}</td>
+            <td>${job.createdDate}</td>
+            <td>${job.deadline}</td>
+            <td>${job.status}</td>
+        `; 
+        tablo.appendChild(tr);
+    });
 }
