@@ -44,6 +44,7 @@ async function BütünIsleriGetirAsync(bitenGoster = true) {
             throw new Error(data.Message || data.message || "Bilinmeyen hata");
         }
         fillTableJobAll(data);
+        console.log(data)
     } catch (err) {
         alert(err.message);
     }
