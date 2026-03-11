@@ -29,11 +29,11 @@ function getUserIdFromToken(token) {
 
 
 
-function getUserIdFromToken(token) {
-    if (!token) return null;
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.UserId;
-}
+// function getUserIdFromToken(token) {
+//     if (!token) return null;
+//     const payload = JSON.parse(atob(token.split('.')[1]));
+//     return payload.UserId;
+// }
 
 async function BütünIsleriGetirAsync(bitenGoster = true) {
     try {
@@ -87,13 +87,12 @@ document.querySelector("#BütünIsler tbody").addEventListener("click", e => {
     selectedJobId = tr.dataset.dosyaId;
 });
 document.getElementById("deleteJobHeader").addEventListener("click",()=>
-{
-   if(!selectedJobId) return alert("İş başlığı seçin");
+{   
    document.getElementById("DeleteconfirmModal").style.display = "block";
   
 })
 document.querySelector("#DeleteconfirmModal #DeletebtnYes").addEventListener("click", () => {
-
+  
     IsBaslikSil();
   
      document.getElementById("DeleteconfirmModal").style.display = "none";
@@ -105,7 +104,10 @@ async function IsBaslikSil()
 {
     try
     {
-        const istek=await fetch(`http://localhost:1000/api/Job/iş başlık?id=${selectedJobId}`,{
+        const silincekid = selectedJobId ? selectedJobId : selectedKendiJobId;
+
+        if (!silincekid) return alert("Lütfen bir iş seçin");
+        const istek=await fetch(`http://localhost:1000/api/Job/iş başlık?id=${silincekid}`,{
         method:"DELETE"
         });
        
@@ -161,3 +163,15 @@ function fillTableKendiislerim(data) {
         tablo.appendChild(tr);
     });
 }
+let selectedKendiJobId=null;
+document.querySelector("#kendiIsler tbody").addEventListener("click",(e)=>
+{
+    const tr=e.target.closest("tr");
+    if(!tr) return;
+    document.querySelectorAll("#kendiIsler tbody tr").forEach(j=>
+    {
+        j.style.background="";
+    });
+    tr.style.background="#ddd";
+    selectedKendiJobId=tr.dataset.dosyaId;   
+});
