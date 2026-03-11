@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const token = localStorage.getItem("authToken");
     gelUserId = getUserIdFromToken(token);
     console.log(gelUserId);
+    console.log(token)
 
     await BütünIsleriGetirAsync(true); 
 
@@ -16,7 +17,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function getUserIdFromToken(token) {
     if (!token) return null;
-    const payload = JSON.parse(atob(token.split('.')[1]));
+    
+
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    
+  
+    const padded = base64.padEnd(base64.length + (4 - base64.length % 4) % 4, '=');
+    
+    const payload = JSON.parse(atob(padded));
     return payload.UserId;
 }
 
@@ -128,9 +137,11 @@ async function kendiIsleriniGetir() {
 
         const data = await istek.json(); 
         console.log(data);
+        console.log(gelUserId)
         return data;
     }
     catch (err) {
         alert(err.message);   
     }
+
 }
