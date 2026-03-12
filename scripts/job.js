@@ -224,3 +224,39 @@ document.querySelector("#kendiIsler tbody").addEventListener("click",(e)=>
     tr.style.background="#ddd";
     selectedKendiJobId=tr.dataset.dosyaId;   
 });
+document.getElementById("isKarsila").addEventListener("click",()=>
+{
+    if(!gelUserId) return alert("Hata sistem yöneticise başvurun");
+    if(!selectedJobId) return alert("İş seçiniz");
+    console.log(selectedJobId)
+    console.log(gelUserId)
+    isKarsila()
+})
+
+ async function isKarsila() {
+  try
+  {
+    debugger;
+      const istek=  await fetch(`http://localhost:1000/api/Job/karsila?userId=${gelUserId}&jobId=${selectedJobId}`,
+        {
+            method:"POST",
+            body: JSON.stringify({
+                 
+                userId: gelUserId, 
+                jobId:selectedJobId
+                })
+        });
+    const data=await istek.json(); 
+    if (!istek.ok) {
+       throw new Error(data.message || data.Message || "Bilinmeyen hata");
+    }
+    console.log(data)
+    
+  }
+  catch(err)
+  {
+    alert(err.message)
+  }   
+  kendiIsleriniGetir()
+  BütünIsleriGetirAsync()
+}
