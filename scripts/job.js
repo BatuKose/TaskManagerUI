@@ -300,4 +300,44 @@ document.getElementById("isBaslikGuncelle").addEventListener("click", async () =
         option.textContent = c.userName;
         select.appendChild(option);
     });
+
+    document.getElementById("isBaslikbtnClose").addEventListener("click",()=>
+    {
+     document.getElementById("isBaslikUpdateModal").style.display = "none";    
+    });
+    
+    document.getElementById("isBaslikbtnSave").addEventListener("click", async () =>
+{
+    try
+    {
+        const text=document.getElementById("UpdateBaslik").value;
+        const istek = await fetch(`http://localhost:1000/api/Job/iş başlık?id=${selectedJobId}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: text,
+                    assignedUserId: document.getElementById("calisanlar").value
+                })
+            }
+        );
+
+        if (!istek.ok)
+        {
+            const data = await istek.json();
+            throw new Error(data.Message || "Bilinmeyen hata");
+        }
+
+        alert("seçili iş güncellendi");
+        document.getElementById("UpdateBaslik").value = "";
+        BütünIsleriGetirAsync(); 
+        document.getElementById("isBaslikUpdateModal").style.display = "none";
+    }
+    catch (err)
+    {
+        alert(err.message);
+    }
+});
 });
