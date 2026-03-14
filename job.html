@@ -11,6 +11,7 @@
     <input type="checkbox" id="chkPasif" checked>
     <button id="deleteJobHeader">İş başlığı sil</button>
     <button id="isKarsila">İş Karsila</button>
+    <button id="isBaslikGuncelle">İş Başlık güncelle</button>
     <!--detaylı yapılmış iş tablosu-->
     <h3>Bütün işler</h3>
      <table id="BütünIsler" border="1">
@@ -54,6 +55,22 @@
             <button id="DeletebtnNo">Hayır</button>
         </div>
     </div>
+    <!--iş başlığı güncelleme modal-->
+        <div id="isBaslikUpdateModal" style="display:none; border:1px solid black; padding:15px; width:300px;">
+        <h3>İş güncelle</h3>
+        <div>
+            <label>İş başlı<keygen></label>
+            <input type="text" id="UpdateBaslik">
+        </div>
+        <div>
+            <label>Kullanıcı</label>
+            <select id="calisanlar"></select>
+        </div>
+        <br>
+        <button id="isBaslikbtnSave">Kaydet</button>
+        <button id="isBaslikbtnClose">Kapat</button>
+    </div>
+
     <script src="scripts/job.js"></script>
 </body>
 </html>

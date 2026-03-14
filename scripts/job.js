@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         BütünIsleriGetirAsync(bitenGoster);   
     });
     kendiIsleriniGetir()
+    aktifCalisanlariGetir(token);
 });
 
 function getUserIdFromToken(token) {
@@ -260,3 +261,43 @@ document.getElementById("isKarsila").addEventListener("click",()=>
   kendiIsleriniGetir()
   BütünIsleriGetirAsync()
 }
+
+async function aktifCalisanlariGetir(token) {
+    try {
+        const istek = await fetch(`http://localhost:1000/api/users/calisanlar`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        });
+        const data = await istek.json();
+
+        if (!istek.ok) {
+            throw new Error(data.Message || data.message || "Bilinmeyen hata");
+        }
+        console.log(data);
+        return data;
+        
+    }
+    catch (err) {
+        alert(err.message);
+    }
+}
+document.getElementById("isBaslikGuncelle").addEventListener("click", async () =>
+{
+    if (!selectedJobId) return alert("güncellencek işi seciniz.");
+    document.getElementById("isBaslikUpdateModal").style.display = "block";
+    
+    const token = localStorage.getItem("authToken");
+    const calisanlar = await aktifCalisanlariGetir(token); 
+
+    const select = document.getElementById("calisanlar");
+    select.innerHTML = "";
+    calisanlar.forEach(c => {
+        const option = document.createElement("option");
+        option.value = c.id;
+        option.textContent = c.userName;
+        select.appendChild(option);
+    });
+});
