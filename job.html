@@ -12,6 +12,7 @@
     <button id="deleteJobHeader">İş başlığı sil</button>
     <button id="isKarsila">İş Karsila</button>
     <button id="isBaslikGuncelle">İş Başlık güncelle</button>
+    <button id="isBaslikEkle">İş Başlık ekle</button>
     <!--detaylı yapılmış iş tablosu-->
     <h3>Bütün işler</h3>
      <table id="BütünIsler" border="1">
@@ -59,7 +60,7 @@
         <div id="isBaslikUpdateModal" style="display:none; border:1px solid black; padding:15px; width:300px;">
         <h3>İş güncelle</h3>
         <div>
-            <label>İş başlı<keygen></label>
+            <label>İş başlık</label>
             <input type="text" id="UpdateBaslik">
         </div>
         <div>
@@ -69,6 +70,30 @@
         <br>
         <button id="isBaslikbtnSave">Kaydet</button>
         <button id="isBaslikbtnClose">Kapat</button>
+    </div>
+     </div>
+    <!--iş başlığı ekleme modal-->
+        <div id="isBaslikInsertModal" style="display:none; border:1px solid black; padding:15px; width:300px;">
+        <h3>Yeni iş ekle</h3>
+        <div>
+            <label>İş başlık</label>
+            <input type="text" id="InsertBaslik">
+        </div>
+        <div>
+            <label>Kullanıcı</label>
+            <select id="Insertcalisanlar"></select>
+        </div>
+         <div>
+            <label>Yonetici</label>
+            <select id="InsertYoneticiler"></select>
+        </div>
+        <div>
+            <label>İşin bitiş tarihi</label>
+            <input type="datetime-local" id="InsertDeadline" />
+        </div>
+        <br>
+        <button id="isBaslikInsertbtnSave">Kaydet</button>
+        <button id="isBaslikInsertbtnClose">Kapat</button>
     </div>
 
     <script src="scripts/job.js"></script>

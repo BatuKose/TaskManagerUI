@@ -45,7 +45,6 @@ async function BütünIsleriGetirAsync(bitenGoster = true) {
             throw new Error(data.Message || data.message || "Bilinmeyen hata");
         }
         fillTableJobAll(data);
-        console.log(data)
     } catch (err) {
         alert(err.message);
     }
@@ -229,15 +228,12 @@ document.getElementById("isKarsila").addEventListener("click",()=>
 {
     if(!gelUserId) return alert("Hata sistem yöneticise başvurun");
     if(!selectedJobId) return alert("İş seçiniz");
-    console.log(selectedJobId)
-    console.log(gelUserId)
     isKarsila()
 })
 
  async function isKarsila() {
   try
   {
-    debugger;
       const istek=  await fetch(`http://localhost:1000/api/Job/karsila?userId=${gelUserId}&jobId=${selectedJobId}`,
         {
             method:"POST",
@@ -251,7 +247,6 @@ document.getElementById("isKarsila").addEventListener("click",()=>
     if (!istek.ok) {
        throw new Error(data.message || data.Message || "Bilinmeyen hata");
     }
-    console.log(data)
     
   }
   catch(err)
@@ -276,7 +271,6 @@ async function aktifCalisanlariGetir(token) {
         if (!istek.ok) {
             throw new Error(data.Message || data.message || "Bilinmeyen hata");
         }
-        console.log(data);
         return data;
         
     }
@@ -340,4 +334,104 @@ document.getElementById("isBaslikGuncelle").addEventListener("click", async () =
         alert(err.message);
     }
 });
+});
+async function aktifYoneticileriGetir(token) {
+    try {
+        const istek = await fetch(`http://localhost:1000/api/users/yoneticiler`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        });
+        const data = await istek.json();
+        if (!istek.ok) {
+            throw new Error(data.Message || data.message || "Bilinmeyen hata");
+        }
+        return data;
+        
+    }
+    catch (err) {
+        alert(err.message);
+    }
+}
+document.getElementById("isBaslikEkle").addEventListener("click", async ()=>
+{
+    const token = localStorage.getItem("authToken");
+    const calisanlar = await aktifCalisanlariGetir(token); 
+    const yoneticiler = await aktifYoneticileriGetir(token);
+ 
+    const select = document.getElementById("Insertcalisanlar");
+    select.innerHTML = "";
+    
+    // ✅ Varsayılan "Atanmadı" seçeneği eklendi (value=0)
+    const defaultOption = document.createElement("option");
+    defaultOption.value = 0;
+    defaultOption.textContent = "Atanmadı";
+    select.appendChild(defaultOption);
+    
+    calisanlar.forEach(c => {
+        const option = document.createElement("option");
+        option.value = c.id;
+        option.textContent = c.userName;
+        select.appendChild(option);
+    });
+
+    const select2 = document.getElementById("InsertYoneticiler");
+    select2.innerHTML = "";
+    yoneticiler.forEach(c => {
+        const option = document.createElement("option");
+        option.value = c.id;
+        option.textContent = c.userName;
+        select2.appendChild(option);
+    });
+
+    document.getElementById("isBaslikInsertModal").style.display = "block";
+
+    document.getElementById("isBaslikInsertbtnClose").addEventListener("click", function kapat(){
+        document.getElementById("isBaslikInsertModal").style.display = "none";
+    });
+
+    document.getElementById("isBaslikInsertbtnSave").addEventListener("click", async function ac(){
+        const titleText      = document.getElementById("InsertBaslik").value;
+        const managerId      = parseInt(document.getElementById("InsertYoneticiler").value);
+        const assignedUserId = parseInt(document.getElementById("Insertcalisanlar").value); 
+        const deadline       = document.getElementById("InsertDeadline").value;
+
+        try {
+            const istek = await fetch(`http://localhost:1000/api/Job/isbaslik`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: titleText,
+                    managerId: managerId,
+                    assignedUserId: assignedUserId,
+                    deadline: new Date(deadline).toISOString()
+                })
+            });
+
+            
+
+            if (!istek.ok) {
+                const data = await istek.json();
+                throw new Error(data.Message || data.message || "Bilinmeyen hata");
+            }
+
+            alert("İş başlık başarıyla eklendi!");
+
+        } catch (err) {
+            alert(err.message);
+        } finally {
+           
+            document.getElementById("InsertBaslik").value = "";
+            document.getElementById("InsertDeadline").value = "";
+            document.getElementById("Insertcalisanlar").value = 0; 
+            document.getElementById("InsertYoneticiler").selectedIndex = 0;
+            document.getElementById("isBaslikInsertModal").style.display = "none";
+            await BütünIsleriGetirAsync(true);
+        }
+    });
 });
