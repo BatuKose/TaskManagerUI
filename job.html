@@ -111,7 +111,25 @@
     </thead>
         <tbody></tbody>  
     </table>
-
+      <!--iş detayı ekleme modal-->
+        <div id="isDetayInsertModal" style="display:none; border:1px solid black; padding:15px; width:300px;">
+        <h3>Yeni iş detay ekle</h3>
+        <div>
+            <label>İş Detay</label>
+            <input type="text" id="InsertDetay">
+        </div>
+        <div>
+            <label>İş durumu</label>
+            <select id="InsertDurum">
+                <option value="1">mühadale Ediliyor</option>
+                <option value="2">analizde</option>
+                <option value="3">yapıldı</option>
+            </select>
+        </div>
+        <br>
+        <button id="iDetayInsertbtnSave">Kaydet</button>
+        <button id="isDetayInsertbtnClose">Kapat</button>
+    </div>
     <script src="scripts/job.js"></script>
 </body>
 </html>

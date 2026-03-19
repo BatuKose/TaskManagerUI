@@ -621,3 +621,47 @@ function fillTableCezaliIsler(data)
     }
     )
 }
+async function isDetayiEkle() {
+   // if (!isDetay.trim()) return alert("İş detay boş olamaz");
+    const isDetay=document.getElementById("InsertDetay").value;
+    const durum = parseInt(document.getElementById("InsertDurum").value);
+    try
+    {
+    const isId= selectedJobId ? jobDetayStatus: selectedKendiJobId;
+    const istek= await fetch(`http://localhost:1000/api/Job/iş detay`,{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    headerId:isId ,
+                    detail: isDetay,
+                    userId: gelUserId,
+                    jobDetayStatus: durum
+                })
+            });
+             const data= await istek.json();
+    if(!istek.ok)
+        {
+           
+            throw new Error(data.Message ||"Bilinmeyen hata");
+            
+        }    
+        alert("İş detay eklendi");
+    }
+   
+    catch(err)
+    {
+        alert(err.message);
+    }      
+}
+document.getElementById("isDetaylarEkle").addEventListener("click",()=>{
+    document.getElementById("isDetayInsertModal").style.display = "block";
+    document.getElementById("isDetayInsertbtnClose").addEventListener("click",()=>
+    {
+        document.getElementById("isDetayInsertModal").style.display = "none";
+    })
+    document.getElementById("iDetayInsertbtnSave").addEventListener("click",()=>{
+        isDetayiEkle();
+    });
+});
