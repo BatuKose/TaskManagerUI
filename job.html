@@ -1,135 +1,299 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İş sayfası</title>
-    <link rel="stylesheet" href="css/job.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>İş Sayfası — Şirket Paneli</title>
+  <link rel="stylesheet" href="css/job.css" />
 </head>
 <body>
-    <label for="chkPasif">Biten işler/Devam eden işler</label>
-    <input type="checkbox" id="chkPasif" checked>
-    <button id="deleteJobHeader">İş başlığı sil</button>
-    <button id="isKarsila">İş Karsila</button>
-    <button id="isBaslikGuncelle">İş Başlık güncelle</button>
-    <button id="isBaslikEkle">İş Başlık ekle</button>
-    <button id="isDetaylari">İş detaylarına bak</button>
-    <button id="isDetaylarisil">İş detay sil</button>
-    <button id="isDetaylarEkle">İş detay Ekle</button>
-    <!--detaylı yapılmış iş tablosu-->
-    <h3>Bütün işler</h3>
-     <table id="BütünIsler" border="1">
-    <thead>
-        <tr>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <h1>
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:8px;opacity:.85">
+      <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+    </svg>
+    İş Sayfası
+  </h1>
+  <div class="header-meta">
+    <span id="headerDate"></span>
+  </div>
+</header>
+
+<main class="page-body">
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <!-- Toggle -->
+    <div class="toolbar-group">
+      <label class="toggle-wrap" title="Biten / Devam eden işler">
+        <input type="checkbox" id="chkPasif" checked />
+        <span class="toggle-track"></span>
+        <span>Biten işleri göster</span>
+      </label>
+    </div>
+
+    <!-- İş Başlık -->
+    <div class="toolbar-group">
+      <button class="btn btn-primary" id="isBaslikEkle">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        İş Başlık Ekle
+      </button>
+      <button class="btn btn-outline" id="isBaslikGuncelle">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg>
+        Başlık Güncelle
+      </button>
+      <button class="btn btn-danger" id="deleteJobHeader">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        Başlık Sil
+      </button>
+    </div>
+
+    <!-- İş Detay -->
+    <div class="toolbar-group">
+      <button class="btn btn-outline" id="isDetaylari">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+        İş Detayları
+      </button>
+      <button class="btn btn-primary" id="isDetaylarEkle">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Detay Ekle
+      </button>
+      <button class="btn btn-danger" id="isDetaylarisil">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        Detay Sil
+      </button>
+    </div>
+
+    <!-- Karşıla -->
+    <div class="toolbar-group">
+      <button class="btn btn-success" id="isKarsila">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+        İş Karşıla
+      </button>
+    </div>
+  </div>
+
+  <!-- BÜTÜN İŞLER -->
+  <div class="section-card">
+    <div class="section-header">
+      <h3>Bütün İşler</h3>
+      <span class="badge" id="allJobsBadge">0 kayıt</span>
+    </div>
+    <div class="table-wrap">
+      <table id="BütünIsler">
+        <thead>
+          <tr>
             <th>ID</th>
             <th>İş Başlığı</th>
             <th>Yönetici</th>
-            <th>Yönetici Rol</th>
-            <th>Çalışan</th>
-            <th>Çalışan Rol</th>
-            <th>Oluşturma Tarihi</th>
-            <th>Bitiş Tarihi</th>
-            <th>İş Durumu</th>
-        </tr>
-    </thead>
+            <th>Yön. Rol Adı</th>
+            <th>Yön. Rol</th>
+            <th>Atanan Kullanıcı</th>
+            <th>Kull. Rol</th>
+            <th>Oluşturma</th>
+            <th>Son Tarih</th>
+            <th>Durum</th>
+          </tr>
+        </thead>
         <tbody></tbody>
-        <!--kendi isler tablosu-->    
-    </table>
-        <h3>Kendi işlerim</h3>
-     <table id="kendiIsler" border="1">
-    <thead>
-        <tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- KENDİ İŞLERİM -->
+  <div class="section-card">
+    <div class="section-header">
+      <h3>Kendi İşlerim</h3>
+      <span class="badge" id="myJobsBadge">0 kayıt</span>
+    </div>
+    <div class="table-wrap">
+      <table id="kendiIsler">
+        <thead>
+          <tr>
             <th>ID</th>
             <th>İş Başlığı</th>
             <th>Yönetici</th>
-            <th>Yönetici Rol</th>
-            <th>Çalışan Rol</th>
-            <th>Oluşturma Tarihi</th>
+            <th>Yön. Rol Adı</th>
+            <th>Yön. Rol</th>
+            <th>Atanan Kullanıcı</th>
+            <th>Kull. Rol</th>
+            <th>Oluşturma</th>
+            <th>Son Tarih</th>
+            <th>Durum</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CEZALI İŞLER -->
+  <div class="section-card">
+    <div class="section-header">
+      <h3>Cezalı İşler</h3>
+      <span class="badge" style="background:#fce7f3;color:#9d174d;" id="penaltyBadge">0 kayıt</span>
+    </div>
+    <div class="table-wrap">
+      <table id="CezaliIsler">
+        <thead>
+          <tr>
+            <th>İş Adı</th>
+            <th>Son İş Detayı</th>
+            <th>Bitirilmesi Gereken Tarih</th>
             <th>Bitiş Tarihi</th>
-            <th>İş Durumu</th>
-        </tr>
-    </thead>
-        <tbody></tbody>    
-    </table>
-     <!--İş silme onay--> 
-        <div id="DeleteconfirmModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);">
-        <div style="background:white; padding:20px; width:300px; margin:200px auto; text-align:center;">
-            <p>İşleme devam etmek istiyor musun?</p>
-            <button id="DeletebtnYes">Evet</button>
-            <button id="DeletebtnNo">Hayır</button>
-        </div>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
-    <!--iş başlığı güncelleme modal-->
-        <div id="isBaslikUpdateModal" style="display:none; border:1px solid black; padding:15px; width:300px;">
-        <h3>İş güncelle</h3>
-        <div>
-            <label>İş başlık</label>
-            <input type="text" id="UpdateBaslik">
-        </div>
-        <div>
-            <label>Kullanıcı</label>
-            <select id="calisanlar"></select>
-        </div>
-        <br>
-        <button id="isBaslikbtnSave">Kaydet</button>
-        <button id="isBaslikbtnClose">Kapat</button>
+  </div>
+
+</main>
+
+<!-- ── MODALS ──────────────────────────────────────────── -->
+
+<!-- SİLME ONAYI -->
+<div id="DeleteconfirmModal" class="modal-overlay">
+  <div class="modal-box confirm-modal-box">
+    <div class="confirm-icon">🗑️</div>
+    <p>Seçili iş başlığını silmek istediğinize emin misiniz?</p>
+    <div class="modal-footer" style="justify-content:center;">
+      <button class="btn btn-outline" id="DeletebtnNo">Vazgeç</button>
+      <button class="btn btn-danger" id="DeletebtnYes">Evet, Sil</button>
     </div>
-     </div>
-    <!--iş başlığı ekleme modal-->
-        <div id="isBaslikInsertModal" style="display:none; border:1px solid black; padding:15px; width:300px;">
-        <h3>Yeni iş ekle</h3>
-        <div>
-            <label>İş başlık</label>
-            <input type="text" id="InsertBaslik">
-        </div>
-        <div>
-            <label>Kullanıcı</label>
-            <select id="Insertcalisanlar"></select>
-        </div>
-         <div>
-            <label>Yonetici</label>
-            <select id="InsertYoneticiler"></select>
-        </div>
-        <div>
-            <label>İşin bitiş tarihi</label>
-            <input type="datetime-local" id="InsertDeadline" />
-        </div>
-        <br>
-        <button id="isBaslikInsertbtnSave">Kaydet</button>
-        <button id="isBaslikInsertbtnClose">Kapat</button>
+  </div>
+</div>
+
+<!-- İŞ BAŞLIK GÜNCELLE -->
+<div id="isBaslikUpdateModal" class="modal-overlay">
+  <div class="modal-box">
+    <h3>
+      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:6px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg>
+      İş Başlık Güncelle
+    </h3>
+    <div class="form-group">
+      <label>İş Başlığı</label>
+      <input type="text" id="UpdateBaslik" placeholder="Yeni başlık giriniz…" />
     </div>
-    <!--cezalı işler-->
-     <h3>Cezalı İşler</h3>
-     <table id="CezaliIsler" border="1">
-    <thead>
-        <tr>
-            <th>İş adı</th>
-            <th>Son iş detayı</th>
-            <th>Bitirlmesi gereken Tarihi</th>
-            <th>Bitiş Tarihi</th>
-        </tr>
-    </thead>
-        <tbody></tbody>  
-    </table>
-      <!--iş detayı ekleme modal-->
-        <div id="isDetayInsertModal" style="display:none; border:1px solid black; padding:15px; width:300px;">
-        <h3>Yeni iş detay ekle</h3>
-        <div>
-            <label>İş Detay</label>
-            <input type="text" id="InsertDetay">
-        </div>
-        <div>
-            <label>İş durumu</label>
-            <select id="InsertDurum">
-                <option value="1">mühadale Ediliyor</option>
-                <option value="2">analizde</option>
-                <option value="3">yapıldı</option>
-            </select>
-        </div>
-        <br>
-        <button id="iDetayInsertbtnSave">Kaydet</button>
-        <button id="isDetayInsertbtnClose">Kapat</button>
+    <div class="form-group">
+      <label>Atanan Çalışan</label>
+      <select id="calisanlar"></select>
     </div>
-    <script src="scripts/job.js"></script>
+    <div class="modal-footer">
+      <button class="btn btn-outline" id="isBaslikbtnClose">İptal</button>
+      <button class="btn btn-primary" id="isBaslikbtnSave">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- İŞ BAŞLIK EKLE -->
+<div id="isBaslikInsertModal" class="modal-overlay">
+  <div class="modal-box">
+    <h3>
+      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:6px"><path d="M12 5v14M5 12h14"/></svg>
+      Yeni İş Başlığı Ekle
+    </h3>
+    <div class="form-group">
+      <label>İş Başlığı</label>
+      <input type="text" id="InsertBaslik" placeholder="Başlık giriniz…" />
+    </div>
+    <div class="form-group">
+      <label>Yönetici</label>
+      <select id="InsertYoneticiler"></select>
+    </div>
+    <div class="form-group">
+      <label>Atanan Çalışan</label>
+      <select id="Insertcalisanlar"></select>
+    </div>
+    <div class="form-group">
+      <label>Son Tarih</label>
+      <input type="datetime-local" id="InsertDeadline" />
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" id="isBaslikInsertbtnClose">İptal</button>
+      <button class="btn btn-primary" id="isBaslikInsertbtnSave">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- İŞ DETAY EKLE -->
+<div id="isDetayInsertModal" class="modal-overlay">
+  <div class="modal-box">
+    <h3>
+      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:6px"><path d="M12 5v14M5 12h14"/></svg>
+      Yeni İş Detayı Ekle
+    </h3>
+    <div class="form-group">
+      <label>İş Detayı</label>
+      <input type="text" id="InsertDetay" placeholder="Detay giriniz…" />
+    </div>
+    <div class="form-group">
+      <label>İş Durumu</label>
+      <select id="InsertDurum">
+        <option value="1">Müdahale Ediliyor</option>
+        <option value="2">Analizde</option>
+        <option value="3">Yapıldı</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" id="isDetayInsertbtnClose">İptal</button>
+      <button class="btn btn-primary" id="iDetayInsertbtnSave">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<script src="scripts/job.js"></script>
+<script>
+  /* ── UI helpers (modal open/close wiring) ── */
+  document.getElementById('headerDate').textContent =
+    new Date().toLocaleDateString('tr-TR', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+  // Make old style="display:block/none" work with new .active class approach
+  const modalIds = ['DeleteconfirmModal','isBaslikUpdateModal','isBaslikInsertModal','isDetayInsertModal'];
+  modalIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const orig = Object.getOwnPropertyDescriptor(HTMLElement.prototype,'style');
+    new MutationObserver(() => {
+      el.classList.toggle('active', el.style.display !== 'none');
+    }).observe(el, { attributes: true, attributeFilter: ['style'] });
+  });
+
+  /* Badge counters */
+  const allObserver = new MutationObserver(() => {
+    const rows = document.querySelectorAll('#BütünIsler tbody tr').length;
+    document.getElementById('allJobsBadge').textContent = rows + ' kayıt';
+  });
+  allObserver.observe(document.querySelector('#BütünIsler tbody'), { childList: true });
+
+  const myObserver = new MutationObserver(() => {
+    const rows = document.querySelectorAll('#kendiIsler tbody tr').length;
+    document.getElementById('myJobsBadge').textContent = rows + ' kayıt';
+  });
+  myObserver.observe(document.querySelector('#kendiIsler tbody'), { childList: true });
+
+  const penObserver = new MutationObserver(() => {
+    const rows = document.querySelectorAll('#CezaliIsler tbody tr').length;
+    document.getElementById('penaltyBadge').textContent = rows + ' kayıt';
+  });
+  penObserver.observe(document.querySelector('#CezaliIsler tbody'), { childList: true });
+
+  /* Status badge renderer — patch fillTableJobAll / fillTableKendiislerim output */
+  document.addEventListener('DOMContentLoaded', () => {
+    ['BütünIsler','kendiIsler'].forEach(tblId => {
+      document.querySelector(`#${tblId} tbody`).addEventListener('DOMNodeInserted', (e) => {
+        if (e.target.tagName !== 'TR') return;
+        const lastTd = e.target.querySelector('td:last-child');
+        if (!lastTd) return;
+        const text = lastTd.textContent.trim();
+        const map = { 'Bekleniyor':1, 'Karşılandı':2, 'Tamamlandı':3, 'iptal':4, 'İptal':4, 'Cezalı':5 };
+        const cls = map[text] ?? 0;
+        lastTd.innerHTML = `<span class="status-badge status-${cls}">${text}</span>`;
+      });
+    });
+  });
+</script>
 </body>
 </html>
