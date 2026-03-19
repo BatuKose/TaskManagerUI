@@ -12,6 +12,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     kendiIsleriniGetir()
     aktifCalisanlariGetir(token);
+    const cezaliIslerData= await cezaliIsler();
+    if(cezaliIslerData)  fillTableCezaliIsler(cezaliIslerData);
+   
 });
 
 function getUserIdFromToken(token) {
@@ -584,3 +587,37 @@ document.getElementById("isDetaylarisil").addEventListener("click",()=>
 {
     isDetaySil()
 })
+
+async function cezaliIsler() {
+    try
+    {
+        const istek= await fetch(`http://localhost:1000/api/Job/Cezalıİsler`);
+        const data= await istek.json();
+        if(!istek.ok)
+        {
+            throw new Error(data.Message||"Bilinmeyen hata")
+        }
+        return data;
+    }
+    catch(err)
+    {
+        alert(err.message)
+    }
+}
+function fillTableCezaliIsler(data)
+{
+    const tablo=document.querySelector("#CezaliIsler tbody");
+    tablo.innerHTML="";
+    data.forEach(job=>
+    {
+        const tr=document.createElement("tr");
+        tr.innerHTML=`
+        <td>${job.jobHeaderName}</td>
+        <td>${job.jobDetailName}</td>
+        <td>${job.deadline}</td>
+        <td>${job.finishedTime}</td>
+        `;
+        tablo.appendChild(tr);
+    }
+    )
+}
