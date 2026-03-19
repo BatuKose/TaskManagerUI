@@ -363,8 +363,6 @@ document.getElementById("isBaslikEkle").addEventListener("click", async ()=>
  
     const select = document.getElementById("Insertcalisanlar");
     select.innerHTML = "";
-    
-    // ✅ Varsayılan "Atanmadı" seçeneği eklendi (value=0)
     const defaultOption = document.createElement("option");
     defaultOption.value = 0;
     defaultOption.textContent = "Atanmadı";
@@ -434,4 +432,125 @@ document.getElementById("isBaslikEkle").addEventListener("click", async ()=>
             await BütünIsleriGetirAsync(true);
         }
     });
+});
+
+let selectedJobDetailId = null; 
+
+function statusMetni(status) {
+    const map = { 1: "Bekliyor", 2: "Devam Ediyor", 3: "Tamamlandı", 4: "İptal" };
+    return map[status] || "Bilinmiyor";
+}
+
+function tarihFormatla(tarih) {
+    if (!tarih || tarih.startsWith("0001")) return "-";
+    return new Date(tarih).toLocaleString("tr-TR");
+}
+
+function modalOlustur() {
+    if (document.getElementById("isDetayModal")) return;
+
+    const overlay = document.createElement("div");
+    overlay.id = "isDetayModal";
+    overlay.innerHTML = `
+        <div id="isDetayModalIcerik">
+            <div id="isDetayModalHeader">
+                <h2 id="isDetayBaslik"></h2>
+                <button id="isDetayKapat">✕</button>
+            </div>
+            <div id="isDetayMeta"></div>
+            <table id="isDetayTablo">
+                <thead>
+                    <tr>
+                        <th>Detay ID</th>
+                        <th>Görev Adı</th>
+                        <th>Durum</th>
+                        <th>Deadline</th>
+                        <th>Bitiş Zamanı</th>
+                        <th>Atayan</th>
+                        <th>Çalışan</th>
+                    </tr>
+                </thead>
+                <tbody id="isDetayBody"></tbody>
+            </table>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    document.getElementById("isDetayKapat").addEventListener("click", modalKapat);
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) modalKapat();
+    });
+}
+
+function modalKapat() {
+    const modal = document.getElementById("isDetayModal");
+    if (modal) modal.remove();
+}
+
+function modalDoldur(data) {
+    const ilk = data[0];
+
+    document.getElementById("isDetayBaslik").textContent = ilk.jobHeaderName;
+
+    document.getElementById("isDetayMeta").innerHTML = `
+        <span>İş Durumu: <b>${statusMetni(ilk.jobHeaderStatus)}</b></span>
+        <span>Yönetici: <b>${ilk.managerUserName} (${ilk.managerRole})</b></span>
+        <span>Oluşturulma: <b>${tarihFormatla(ilk.workCreateTıme)}</b></span>
+    `;
+
+    const tbody = document.getElementById("isDetayBody");
+    tbody.innerHTML = "";
+
+    data.forEach((item) => {
+        const tr = document.createElement("tr");
+
+        
+        tr.style.cursor = "pointer";
+        tr.addEventListener("click", () => {
+         
+            tbody.querySelectorAll("tr").forEach(r => r.classList.remove("selected"));
+            tr.classList.add("selected");
+            selectedJobDetailId = item.jobDetailId;
+            console.log("Seçilen jobDetailId:", selectedJobDetailId);
+        });
+
+        tr.innerHTML = `
+            <td>${item.jobDetailId}</td>
+            <td>${item.jobDetayName}</td>
+            <td>${statusMetni(item.jobDetayStatus)}</td>
+            <td>${tarihFormatla(item.deadline)}</td>
+            <td>${tarihFormatla(item.jobFinishedTime)}</td>
+            <td>${item.managerUserName}</td>
+            <td>${item.workerUserName}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+async function isDetaylariniGetir() {
+    try {
+        const jobId = selectedJobId ? selectedJobId : selectedKendiJobId;
+        if (!jobId) return alert("İş başlığı seçiniz");
+
+        const istek = await fetch(`http://localhost:1000/api/Job/jobAllDetails?jobHeaderId=${jobId}`);
+        const data = await istek.json();
+
+        if (!istek.ok) throw new Error(data.Message || "Bilinmeyen hata");
+
+        selectedJobDetailId = null;
+        modalOlustur();
+        modalDoldur(data);
+
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+document.getElementById("isDetaylari").addEventListener("click", () => {
+    isDetaylariniGetir();
+});
+
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") modalKapat();
 });
