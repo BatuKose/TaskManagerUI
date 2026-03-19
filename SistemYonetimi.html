@@ -1,133 +1,289 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Yönetimi</title>
-    <link rel="stylesheet" href="css/SistemYonetimi.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistem Yönetimi — Şirket Paneli</title>
+  <link rel="stylesheet" href="css/SistemYonetimi.css" />
 </head>
 <body>
 
-    <!-- Ana Butonlar -->
-    <button id="btnSoftDelete">Pasif/Aktif Yap</button>
-    <button id="btnOpenModal">Yeni Kullanıcı</button>
-    <button id="btnUpdateOpenModal">Kullanıcı Güncelle</button>
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <h1>
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+    Sistem Yönetimi
+  </h1>
+  <div class="header-meta" id="headerDate"></div>
+</header>
 
-    <!-- Checkbox -->
-    <label for="chkPasif">Aktif / Pasif</label>
-    <input type="checkbox" id="chkPasif" checked>
+<main class="page-body">
 
-    <!-- Kullanıcı Tablosu -->
-    <table id="userTable" border="1">
+  <!-- KULLANICI TOOLBAR (full width) -->
+  <div class="toolbar full-width">
+    <div class="toolbar-group">
+      <label class="toggle-wrap" title="Aktif / Pasif kullanıcılar">
+        <input type="checkbox" id="chkPasif" />
+        <span class="toggle-track"></span>
+        <span>Pasif kullanıcıları göster</span>
+      </label>
+    </div>
+    <div class="toolbar-group">
+      <button class="btn btn-primary" id="btnOpenModal">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>
+        Yeni Kullanıcı
+      </button>
+      <button class="btn btn-outline" id="btnUpdateOpenModal">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg>
+        Kullanıcı Güncelle
+      </button>
+      <button class="btn btn-warning" id="btnSoftDelete">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+        Pasif / Aktif Yap
+      </button>
+    </div>
+  </div>
+
+  <!-- KULLANICI TABLOSU -->
+  <div class="section-card full-width">
+    <div class="section-header">
+      <h3>
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        Kullanıcılar
+      </h3>
+      <span class="badge" id="userBadge">0 kayıt</span>
+    </div>
+    <div class="table-wrap">
+      <table id="userTable">
         <thead>
-            <tr>
-                <th>Kullanıcı Adı</th>
-                <th>Kullanıcı Rol</th>
-                <th>Kullanıcı Mail</th>
-            </tr>
+          <tr>
+            <th>Kullanıcı Adı</th>
+            <th>Kullanıcı Rolü</th>
+            <th>E-Posta</th>
+          </tr>
         </thead>
         <tbody></tbody>
-    </table>
+      </table>
+    </div>
+  </div>
 
-    <br>
+  <!-- ROL TOOLBAR -->
+  <div class="toolbar full-width">
+    <div class="toolbar-group">
+      <button class="btn btn-primary" id="RoleInsert">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Rol Ekle
+      </button>
+      <button class="btn btn-outline" id="RoleUpdate">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg>
+        Rol Güncelle
+      </button>
+      <button class="btn btn-danger" id="RoleDelete">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        Rol Sil
+      </button>
+    </div>
+  </div>
 
-    <!-- Rol Butonları -->
-    <button id="RoleDelete">Rol sil</button>
-    <button id="RoleUpdate">Rol güncelle</button>
-    <button id="RoleInsert">Rol Ekle</button>
-
-    <!-- Rol Tablosu -->
-    <table id="roleTable" border="1">
+  <!-- ROL TABLOSU -->
+  <div class="section-card full-width">
+    <div class="section-header">
+      <h3>
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        Roller
+      </h3>
+      <span class="badge" id="roleBadge">0 kayıt</span>
+    </div>
+    <div class="table-wrap">
+      <table id="roleTable">
         <thead>
-            <tr>
-                <th>Rol numara</th>
-                <th>Rol Adı</th>
-            </tr>
+          <tr>
+            <th>Rol No</th>
+            <th>Rol Adı</th>
+          </tr>
         </thead>
         <tbody></tbody>
-    </table>
-
-    <!-- Onay Modal -->
-    <div id="confirmModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);">
-        <div style="background:white; padding:20px; width:300px; margin:200px auto; text-align:center;">
-            <p>İşleme devam etmek istiyor musun?</p>
-            <button id="btnYes">Evet</button>
-            <button id="btnNo">Hayır</button>
-        </div>
+      </table>
     </div>
+  </div>
 
-    <!-- Kullanıcı Modal -->
-    <div id="userModal" style="display:none; border:1px solid black; padding:15px; width:300px;">
-        <h3>Kullanıcı Tanımla</h3>
-        <div>
-            <label>Kullanıcı Adı</label>
-            <input type="text" id="txtUserName">
-        </div>
-        <div>
-            <label>Email</label>
-            <input type="text" id="txtEmail">
-        </div>
-        <div>
-            <label>Şifre</label>
-            <input type="password" id="txtPassword">
-        </div>
-        <div>
-            <label>Rol</label>
-            <select id="cmbRole"></select>
-        </div>
-        <br>
-        <button id="btnSave">Kaydet</button>
-        <button id="btnClose">Kapat</button>
+</main>
+
+<!-- ── MODALS ──────────────────────────────────────────── -->
+
+<!-- ONAY MODAL -->
+<div id="confirmModal" class="modal-overlay">
+  <div class="modal-box confirm-modal-box">
+    <div class="confirm-icon">⚠️</div>
+    <p>Bu kullanıcıyı pasif/aktif yapmak istediğinize emin misiniz?</p>
+    <p class="confirm-sub">Bu işlem geri alınabilir.</p>
+    <div class="modal-footer" style="justify-content:center;">
+      <button class="btn btn-outline" id="btnNo">Vazgeç</button>
+      <button class="btn btn-warning" id="btnYes">Evet, Devam Et</button>
     </div>
+  </div>
+</div>
 
-    <!-- Kullanıcı Güncelle Modal -->
-    <div id="userUpdateModal" style="display:none; border:1px solid black; padding:15px; width:300px;">
-        <h3>Kullanıcı Güncelle</h3>
-        <div>
-            <label>Kullanıcı Adı</label>
-            <input type="text" id="UpdatetxtUserName">
-        </div>
-        <div>
-            <label>Email</label>
-            <input type="text" id="UpdatetxtEmail">
-        </div>
-        <div>
-            <label>Şifre</label>
-            <input type="password" id="UpdatetxtPassword">
-        </div>
-        <div>
-            <label>Rol</label>
-            <select id="UpdatecmbRole"></select>
-        </div>
-        <br>
-        <button id="UpdatebtnSave">Kaydet</button>
-        <button id="UpdatebtnClose">Kapat</button>
+<!-- YENİ KULLANICI MODAL -->
+<div id="userModal" class="modal-overlay">
+  <div class="modal-box">
+    <h3>
+      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>
+      Yeni Kullanıcı Tanımla
+    </h3>
+    <div class="form-group">
+      <label>Kullanıcı Adı</label>
+      <input type="text" id="txtUserName" placeholder="Kullanıcı adı giriniz…" />
     </div>
-
-    <!-- Rol Güncelle Modal -->
-    <div id="rolModal" style="display:none; border:1px solid black; padding:15px; width:300px;">
-        <h3>Rol Güncelle</h3>
-        <div>
-            <label>Rol Adı</label>
-            <input type="text" id="txtRoleName">
-        </div>
-        <br>
-        <button id="rolbtnSave">Kaydet</button>
-        <button id="rolbtnClose">Kapat</button>
+    <div class="form-group">
+      <label>E-Posta</label>
+      <input type="text" id="txtEmail" placeholder="ornek@sirket.com" />
     </div>
-
-    <!-- Rol Ekle Modal -->
-    <div id="InsertrolModal" style="display:none; border:1px solid black; padding:15px; width:300px;">
-        <h3>Rol Ekle</h3>
-        <div>
-            <label>Rol Adı</label>
-            <input type="text" id="InserttxtRoleName">
-        </div>
-        <br>
-        <button id="InsertrolbtnSave">Kaydet</button>
-        <button id="InsertrolbtnClose">Kapat</button>
+    <div class="form-group">
+      <label>Şifre</label>
+      <input type="password" id="txtPassword" placeholder="••••••••" />
     </div>
+    <div class="form-group">
+      <label>Rol</label>
+      <select id="cmbRole"></select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" id="btnClose">İptal</button>
+      <button class="btn btn-primary" id="btnSave">Kaydet</button>
+    </div>
+  </div>
+</div>
 
-    <script src="scripts/SistemYonetimi.js"></script>
+<!-- KULLANICI GÜNCELLE MODAL -->
+<div id="userUpdateModal" class="modal-overlay">
+  <div class="modal-box">
+    <h3>
+      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg>
+      Kullanıcı Güncelle
+    </h3>
+    <div class="form-group">
+      <label>Kullanıcı Adı</label>
+      <input type="text" id="UpdatetxtUserName" placeholder="Kullanıcı adı…" />
+    </div>
+    <div class="form-group">
+      <label>E-Posta</label>
+      <input type="text" id="UpdatetxtEmail" placeholder="ornek@sirket.com" />
+    </div>
+    <div class="form-group">
+      <label>Şifre</label>
+      <input type="password" id="UpdatetxtPassword" placeholder="••••••••" />
+    </div>
+    <div class="form-group">
+      <label>Rol</label>
+      <select id="UpdatecmbRole"></select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" id="UpdatebtnClose">İptal</button>
+      <button class="btn btn-primary" id="UpdatebtnSave">Güncelle</button>
+    </div>
+  </div>
+</div>
+
+<!-- ROL GÜNCELLE MODAL -->
+<div id="rolModal" class="modal-overlay">
+  <div class="modal-box">
+    <h3>
+      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg>
+      Rol Güncelle
+    </h3>
+    <div class="form-group">
+      <label>Rol Adı</label>
+      <input type="text" id="txtRoleName" placeholder="Yeni rol adı…" />
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" id="rolbtnClose">İptal</button>
+      <button class="btn btn-primary" id="rolbtnSave">Güncelle</button>
+    </div>
+  </div>
+</div>
+
+<!-- ROL EKLE MODAL -->
+<div id="InsertrolModal" class="modal-overlay">
+  <div class="modal-box">
+    <h3>
+      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      Yeni Rol Ekle
+    </h3>
+    <div class="form-group">
+      <label>Rol Adı</label>
+      <input type="text" id="InserttxtRoleName" placeholder="Rol adı giriniz…" />
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" id="InsertrolbtnClose">İptal</button>
+      <button class="btn btn-primary" id="InsertrolbtnSave">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<script src="scripts/SistemYonetimi.js"></script>
+<script>
+  /* ── UI helpers ── */
+  document.getElementById('headerDate').textContent =
+    new Date().toLocaleDateString('tr-TR', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+  // Sync old style="display:block/none" with .active class
+  ['confirmModal','userModal','userUpdateModal','rolModal','InsertrolModal'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    new MutationObserver(() => {
+      el.classList.toggle('active', el.style.display !== 'none');
+    }).observe(el, { attributes: true, attributeFilter: ['style'] });
+
+    // Click outside to close
+    el.addEventListener('click', e => {
+      if (e.target === el) el.style.display = 'none';
+    });
+  });
+
+  // Badge counters
+  new MutationObserver(() => {
+    document.getElementById('userBadge').textContent =
+      document.querySelectorAll('#userTable tbody tr').length + ' kayıt';
+  }).observe(document.querySelector('#userTable tbody'), { childList: true });
+
+  new MutationObserver(() => {
+    document.getElementById('roleBadge').textContent =
+      document.querySelectorAll('#roleTable tbody tr').length + ' kayıt';
+  }).observe(document.querySelector('#roleTable tbody'), { childList: true });
+
+  // Row selection — add/remove .selected class
+  ['userTable','roleTable'].forEach(tblId => {
+    document.querySelector(`#${tblId} tbody`).addEventListener('click', e => {
+      const tr = e.target.closest('tr');
+      if (!tr) return;
+      document.querySelectorAll(`#${tblId} tbody tr`).forEach(r => {
+        r.classList.remove('selected');
+        r.style.background = '';
+      });
+      tr.classList.add('selected');
+    });
+  });
+
+  // Decorate user table rows with avatar + role chip
+  new MutationObserver(mutations => {
+    mutations.forEach(m => {
+      m.addedNodes.forEach(node => {
+        if (node.tagName !== 'TR') return;
+        const cells = node.querySelectorAll('td');
+        if (cells.length < 2) return;
+        // Avatar
+        const name = cells[0].textContent.trim();
+        const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+        cells[0].innerHTML = `<span class="avatar">${initials}</span>${name}`;
+        // Role chip
+        const role = cells[1].textContent.trim();
+        cells[1].innerHTML = `<span class="role-chip">${role}</span>`;
+      });
+    });
+  }).observe(document.querySelector('#userTable tbody'), { childList: true });
+</script>
 </body>
 </html>
