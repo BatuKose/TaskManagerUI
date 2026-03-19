@@ -554,3 +554,33 @@ document.getElementById("isDetaylari").addEventListener("click", () => {
 document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") modalKapat();
 });
+
+async function isDetaySil() {
+    try
+    {
+        const istek= await fetch(`http://localhost:1000/api/Job/isdetay?jobDetayId=${selectedJobDetailId}`,
+            {
+                method:"DELETE"
+            }
+        )
+        if(!istek.ok)
+        {
+            const data= await istek.json();
+            throw new Error(data.Message || "Bilinmeyen hata");
+        }
+        alert("İş detayı silindi")
+    }
+    catch(err)
+    {
+        alert(err.message)
+    }
+    finally
+    {
+       modalKapat();
+       await isDetaylariniGetir();
+    }
+}
+document.getElementById("isDetaylarisil").addEventListener("click",()=>
+{
+    isDetaySil()
+})
