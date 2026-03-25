@@ -6,6 +6,7 @@
     <title>Zimmet Sayfası</title>
 </head>
 <body>
+    <button id="btnKategoriEkle">Kategori Ekle</button>
     <!--zimmet listesi-->
     <table id="zimmetListesi">
         <thead>
@@ -17,6 +18,24 @@
         </thead>
         <tbody></tbody>
     </table>
+    <!--kategori insert modal-->
+<div style="display: none;" id="KategoriInsertModal">
+    <div>
+        <h3>Kategori Ekle</h3>
+            <div>
+                <label>Ad</label>
+                <input type="text"id="txtAdaciklamaInsertKaydet" />
+            </div>
+            <div>
+                <label>Açıklama</label>
+                <input type="text" id="txtKategoriaciklamaInsertKaydet" />
+            </div>
+            <div>
+                <button id="btnKategoriInsertIptal">İptal</button>
+                <button id="btnKategoriInsertKaydet">Kaydet</button>
+            </div>
+    </div>
+</div>
     <script src="scripts/zimmet.js"></script>
 </body>
 </html>
