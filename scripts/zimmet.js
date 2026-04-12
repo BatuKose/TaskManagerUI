@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", async () => {
     await ürünListesiGetir();
 });
@@ -7,32 +8,27 @@ async function ürünListesiGetir() {
         const res = await fetch("http://localhost:1000/ZimmetDemirbas/ürün-listesi");
         const data = await res.json();
 
-        fillTable(data);
+        const tbody = document.querySelector("#zimmetListesi tbody");
+        tbody.innerHTML = "";
+
+        data.forEach(x => {
+            const tr = document.createElement("tr");
+
+            tr.innerHTML = `
+                <td>${x.dosyaid}</td>
+                <td>${x.urunAd}</td>
+                <td>${x.urunKategori}</td>
+                <td>${x.urunMarka}</td>
+                <td>${x.urunModel}</td>
+            `;
+
+            tbody.appendChild(tr);
+        });
 
     } catch (err) {
         alert(err.message);
     }
 }
-
-function fillTable(data) {
-    const tbody = document.querySelector("#zimmetListesi tbody");
-    tbody.innerHTML = "";
-
-    data.forEach(x => {
-        const tr = document.createElement("tr");
-
-        tr.innerHTML = `
-            <td>${x.dosyaid}</td>
-            <td>${x.urunAd}</td>
-            <td>${x.urunKategori}</td>
-            <td>${x.urunMarka}</td>
-            <td>${x.urunModel}</td>
-        `;
-
-        tbody.appendChild(tr);
-    });
-}
-
 async function KategorileriGetir() {
     try {
         const res = await fetch("http://localhost:1000/ZimmetDemirbas/GetCategories");
@@ -50,10 +46,7 @@ async function KategorileriGetir() {
             const opt = document.createElement("option");
             opt.value = c.id;
             opt.textContent = c.name;
-
-            // açıklama taşı
             opt.dataset.desc = c.description || "";
-
             frag.appendChild(opt);
         });
 
@@ -64,7 +57,6 @@ async function KategorileriGetir() {
     }
 }
 
-
 document.getElementById("btnKategoriEkle").addEventListener("click", async () => {
 
     await KategorileriGetir();
@@ -72,30 +64,28 @@ document.getElementById("btnKategoriEkle").addEventListener("click", async () =>
     document.getElementById("KategoriInsertModal").style.display = "block";
 });
 
-
 document.getElementById("categoriCombo").addEventListener("change", (e) => {
 
     const val = Number(e.target.value);
 
     const ad = document.getElementById("txtAdaciklamaInsertKaydet");
-    const aciklama = document.getElementById("txtKategoriaciklamaInsertKaydet");
+    const desc = document.getElementById("txtKategoriaciklamaInsertKaydet");
 
     if (val === 0) {
         ad.value = "";
-        aciklama.value = "";
+        desc.value = "";
         return;
     }
 
     const opt = e.target.options[e.target.selectedIndex];
 
     ad.value = opt.textContent;
-    aciklama.value = opt.dataset.desc || "";
+    desc.value = opt.dataset.desc || "";
 });
 
 document.getElementById("btnKategoriInsertIptal").addEventListener("click", () => {
     document.getElementById("KategoriInsertModal").style.display = "none";
 });
-
 
 document.getElementById("btnKategoriInsertKaydet").addEventListener("click", async () => {
 
@@ -103,19 +93,23 @@ document.getElementById("btnKategoriInsertKaydet").addEventListener("click", asy
     const val = Number(select.value);
 
     if (val > 0) {
-        alert("update"); // backend yok
+        await updateCategori(val);
+        await ürünListesiGetir();
         return;
     }
-
     await insertCategory();
+    alert("Kayıt başarılı");
+    document.getElementById("txtAdaciklamaInsertKaydet").value = "";
+    document.getElementById("txtKategoriaciklamaInsertKaydet").value = "";
+    document.getElementById("categoriCombo").value = "0";
     await ürünListesiGetir();
 });
 
 
 async function insertCategory() {
 
-    const ad = document.getElementById("txtAdaciklamaInsertKaydet").value.trim();
-    const aciklama = document.getElementById("txtKategoriaciklamaInsertKaydet").value.trim();
+    const name = document.getElementById("txtAdaciklamaInsertKaydet").value.trim();
+    const desc = document.getElementById("txtKategoriaciklamaInsertKaydet").value.trim();
 
     const res = await fetch("http://localhost:1000/ZimmetDemirbas/InsertCategory", {
         method: "POST",
@@ -123,14 +117,46 @@ async function insertCategory() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            name: ad,
-            description: aciklama
+            name: name,
+            description: desc
         })
     });
 
     const data = await res.text();
 
+    if (!res.ok) {
+        throw new Error(data);
+    }
+    alert("Kayıt başarılı");
+     KategorileriGetir();
+}
 
+async function updateCategori(val) {
+
+    const name = document.getElementById("txtAdaciklamaInsertKaydet").value.trim();
+    const desc = document.getElementById("txtKategoriaciklamaInsertKaydet").value.trim();
+
+    const res = await fetch(`http://localhost:1000/ZimmetDemirbas/UpdateCategory/${val}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id: val,
+            name: name,
+            description: desc
+        })
+    });
+
+    const data = await res.text();
+
+    if (!res.ok) {
+        throw new Error(data);
+    }
+
+    alert("Güncelleme başarılı");
     document.getElementById("txtAdaciklamaInsertKaydet").value = "";
     document.getElementById("txtKategoriaciklamaInsertKaydet").value = "";
+    document.getElementById("categoriCombo").value = "0";
+    KategorileriGetir();
 }
