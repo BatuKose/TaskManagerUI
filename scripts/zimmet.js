@@ -105,30 +105,58 @@ document.getElementById("btnKategoriInsertKaydet").addEventListener("click", asy
     await ürünListesiGetir();
 });
 
-
 async function insertCategory() {
 
     const name = document.getElementById("txtAdaciklamaInsertKaydet").value.trim();
     const desc = document.getElementById("txtKategoriaciklamaInsertKaydet").value.trim();
 
-    const res = await fetch("http://localhost:1000/ZimmetDemirbas/InsertCategory", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            name: name,
-            description: desc
-        })
-    });
+    try {
+        const res = await fetch("http://localhost:1000/ZimmetDemirbas/InsertCategory", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: name,
+                description: desc
+            })
+        });
 
-    const data = await res.text();
+        const text = await res.text();
 
-    if (!res.ok) {
-        throw new Error(data);
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch {
+            data = text;
+        }
+        if (!res.ok) {
+
+            if (data.errors) {
+                let msg = "";
+
+                Object.keys(data.errors).forEach(key => {
+                    data.errors[key].forEach(err => {
+                        msg += `${key}: ${err}\n`;
+                    });
+                });
+
+                alert(msg);
+                return;
+            }
+
+            throw new Error(data?.message || data?.Message || data || "Bilinmeyen hata");
+        }
+
+        alert("Kategori eklendi");
+
+        // temizle
+        document.getElementById("txtAdaciklamaInsertKaydet").value = "";
+        document.getElementById("txtKategoriaciklamaInsertKaydet").value = "";
+
+    } catch (err) {
+        alert(err.message);
     }
-    alert("Kayıt başarılı");
-     KategorileriGetir();
 }
 
 async function updateCategori(val) {
