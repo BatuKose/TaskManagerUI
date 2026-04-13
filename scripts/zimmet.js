@@ -1,5 +1,7 @@
+//const { jsx } = require("react/jsx-runtime");
 
 document.addEventListener("DOMContentLoaded", async () => {
+
     await ürünListesiGetir();
 });
 
@@ -85,6 +87,9 @@ document.getElementById("categoriCombo").addEventListener("change", (e) => {
 
 document.getElementById("btnKategoriInsertIptal").addEventListener("click", () => {
     document.getElementById("KategoriInsertModal").style.display = "none";
+    document.getElementById("txtAdaciklamaInsertKaydet").value = "";
+    document.getElementById("txtKategoriaciklamaInsertKaydet").value = "";
+    document.getElementById("categoriCombo").value = "0";
 });
 
 document.getElementById("btnKategoriInsertKaydet").addEventListener("click", async () => {
@@ -187,4 +192,49 @@ async function updateCategori(val) {
     document.getElementById("txtKategoriaciklamaInsertKaydet").value = "";
     document.getElementById("categoriCombo").value = "0";
     KategorileriGetir();
+}
+document.getElementById("btnUrunInsertKaydet").addEventListener("click", async ()=>
+{
+
+insertProduct();
+})
+async function insertProduct() {
+    let urunAd=document.getElementById("txtUrunAdı").value;
+    let urunMarka=document.getElementById("txtUrunMarka").value;
+    let urunModel=document.getElementById("txtUrunModel").value;
+    let urunaAciklama=document.getElementById("txtUrunAciklama").value;
+    let urunAdet=document.getElementById("txtUrunAdet").value;
+
+    try
+    {
+        const istek = await fetch(`http://localhost:1000/ZimmetDemirbas/InsertProduct`,
+            {
+                method:"POST",
+                headers: {
+                "Content-Type": "application/json"
+                },
+                body:JSON.stringify({
+                categoryId: 1,
+                name: urunAd,
+                brand:urunMarka,
+                model: urunModel,
+                description: urunaAciklama,
+                unit:urunAdet
+            })
+        })
+        const data= await istek.text();
+        if(!istek.ok)
+        {
+            throw new Error(data.Message ||"Bilinmeyen hata");
+        }
+        else
+        { 
+            alert(data);
+        }
+    }
+    catch(err)
+    {
+        alert(err.message)
+    }
+
 }
