@@ -1,39 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zimmet Sayfası</title>
 </head>
 <body>
-    <button id="btnKategoriEkle">Kategori Ekle/Guncelle</button>
-    <!--zimmet listesi-->
+    <button id="btnKategoriEkle">Kategori Ekle/Güncelle</button>
+    <button id="btnUrunEkle">Ürün Ekle</button>
+
+    <!-- Zimmet Listesi -->
     <table id="zimmetListesi">
-      <thead>
-    <tr>
-        <th>Dosya numarası</th>
-        <th>Ürün Ad</th>
-        <th>Ürün Kategori</th>
-        <th>Ürün Marka</th>
-        <th>Ürün Model</th>
-    </tr>
-</thead>
+        <thead>
+            <tr>
+                <th>Dosya Numarası</th>
+                <th>Ürün Ad</th>
+                <th>Ürün Kategori</th>
+                <th>Ürün Marka</th>
+                <th>Ürün Model</th>
+            </tr>
+        </thead>
         <tbody></tbody>
     </table>
-    <!--kategori insert modal-->
-<div style="display: none;" id="KategoriInsertModal">
-    <div>
-        <h3>Kategori Ekle/Guncelle</h3>
+
+    <!-- Kategori Modal -->
+    <div style="display:none;" id="KategoriInsertModal">
+        <div>
+            <h3>Kategori Ekle/Güncelle</h3>
             <div>
                 <label>Kategoriler</label>
                 <select id="categoriCombo">
-                <option value="0" selected disabled hidden>Seçiniz</option>
+                    <option value="0" selected disabled hidden>Seçiniz</option>
                 </select>
             </div>
-
             <div>
                 <label>Ad</label>
-                <input type="text"id="txtAdaciklamaInsertKaydet" />
+                <input type="text" id="txtAdaciklamaInsertKaydet" />
             </div>
             <div>
                 <label>Açıklama</label>
@@ -43,44 +45,46 @@
                 <button id="btnKategoriInsertIptal">İptal</button>
                 <button id="btnKategoriInsertKaydet">Kaydet</button>
             </div>
+        </div>
     </div>
-</div>
-        <!--product insert modal-->
-<div style="display: block;" id="pruductInsertModal">
-    <div>
-        <h3>Ürün Ekle</h3>
+
+    <!-- Ürün Modal -->
+    <div style="display:none;" id="productInsertModal">
+        <div>
+            <h3>Ürün Ekle</h3>
             <div>
                 <label>Kategoriler</label>
-                <select id="uruncategoriCombo">
-                <option value="0" selected disabled hidden>Seçiniz</option>
+                <select id="productCategoriCombo">
+                    <option value="0" selected disabled hidden>Seçiniz</option>
                 </select>
             </div>
             <div>
-                <label>Ürün adı</label>
-                <input type="text" id="txtUrunAdı">
+                <label>Ürün Adı</label>
+                <input type="text" id="txtUrunAdı" />
             </div>
             <div>
                 <label>Marka</label>
-                <input type="text" id="txtUrunMarka">
+                <input type="text" id="txtUrunMarka" />
             </div>
             <div>
                 <label>Model</label>
-                <input type="text" id="txtUrunModel">
+                <input type="text" id="txtUrunModel" />
             </div>
             <div>
                 <label>Açıklama</label>
-                <input type="text" id="txtUrunAciklama">
+                <input type="text" id="txtUrunAciklama" />
             </div>
             <div>
                 <label>Adet</label>
-                <input type="number" id="txtUrunAdet">
+                <input type="number" id="txtUrunAdet" />
             </div>
             <div>
                 <button id="btnUrunInsertIptal">İptal</button>
                 <button id="btnUrunInsertKaydet">Kaydet</button>
             </div>
+        </div>
     </div>
-</div>
+
     <script src="scripts/zimmet.js"></script>
 </body>
 </html>
