@@ -9,9 +9,10 @@ async function ürünListesiGetir() {
 
         const tbody = document.querySelector("#zimmetListesi tbody");
         tbody.innerHTML = "";
-
+        
         data.forEach(x => {
             const tr = document.createElement("tr");
+            tr.dataset.dosyaid = x.dosyaid;
             tr.innerHTML = `
                 <td>${x.dosyaid}</td>
                 <td>${x.urunAd}</td>
@@ -26,7 +27,20 @@ async function ürünListesiGetir() {
         alert(err.message);
     }
 }
+let selectedUrunId = null;
 
+document.querySelector("#zimmetListesi tbody").addEventListener("click", e => {
+    
+    const tr = e.target.closest("tr");
+    if (!tr) return;
+
+    document.querySelectorAll("#zimmetListesi tbody tr").forEach(p => {
+        p.style.background = "";
+    });
+
+    tr.style.background = "#ddd";
+    selectedUrunId = tr.dataset.dosyaid;  
+});
 async function KategorileriGetir(selectId = "categoriCombo") {
     try {
         const res = await fetch("http://localhost:1000/ZimmetDemirbas/GetCategories");
@@ -231,3 +245,7 @@ async function insertProduct() {
         alert(err.message);
     }
 }
+document.getElementById("btnUrunSil").addEventListener("click",async ()=>{
+
+    console.log(selectedUrunId)
+})
