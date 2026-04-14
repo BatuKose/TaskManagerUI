@@ -246,6 +246,39 @@ async function insertProduct() {
     }
 }
 document.getElementById("btnUrunSil").addEventListener("click",async ()=>{
+    if(!selectedUrunId) return alert("Ürün seçiniz");
+    document.getElementById("UrunSilmeSoruModal").style.display = "block";
+    document.getElementById("btnUrunSilHayir").addEventListener("click",()=>{
+        selectedUrunId=null;
+         document.getElementById("UrunSilmeSoruModal").style.display = "none";
+         ürünListesiGetir();
+    })
+    document.getElementById("btnUrunSilEvet").addEventListener("click",()=>{
+        UrunSil();
+        document.getElementById("UrunSilmeSoruModal").style.display = "none";
+    })
 
-    console.log(selectedUrunId)
 })
+async function UrunSil() {
+        try{
+            const istek= await fetch(`http://localhost:1000/ZimmetDemirbas/soft-delete-product/${selectedUrunId}`,{
+                method:"PUT"
+            });
+            if(!istek.ok)
+            {
+                const data= await istek.json();
+                throw new Error(data.Message ||"Bilinmeyen hata")
+            }
+            else
+            {
+                selectedUrunId="";
+                alert("Ürün silindi");
+                ürünListesiGetir();
+                
+            }
+        }
+        catch(err)
+        {
+            alert(err.message);
+        }
+       }
