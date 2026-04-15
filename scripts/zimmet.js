@@ -282,3 +282,20 @@ async function UrunSil() {
             alert(err.message);
         }
        }
+
+async function getUsers() {
+    try
+    {
+        const istek= await fetch(`http://localhost:1000/ZimmetDemirbas/getuserforzimmet`);
+        const data= await istek.json();
+        if(!istek.ok)
+        {
+            throw new Error(data.Message||"Bilinmeyen hata")
+        }
+       return data;
+    }
+    catch(err)
+    {
+        alert(err.message);
+    }
+}
