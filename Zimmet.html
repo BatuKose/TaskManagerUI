@@ -9,6 +9,7 @@
     <button id="btnKategoriEkle">Kategori Ekle/Güncelle</button>
     <button id="btnUrunEkle">Ürün Ekle</button>
     <button id="btnUrunSil">Ürün Sil</button>
+    <button id="btnZimmetEkle">Zimmet yap</button>
     <!-- Zimmet Listesi -->
     <table id="zimmetListesi">
         <thead>
@@ -92,7 +93,32 @@
             </div>
         </div>
     </div>
-
+    <!--UserModal-->
+    <div style="display:none;" id="userModal">
+        <div>
+            <h3>Kullanıcı listesi</h3>
+            <div>
+                <table id="userListesi">
+        <thead>
+            <tr>
+                <th>Kullanıcı Numarası</th>
+                <th>Kullanıcı</th>
+                <th>Kullanıcı Rol</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <div>
+        <label>Ürün Miktari</label>
+        <input type="number" id="zimmetInsertUnit">
+    </div>
+    <div>
+        <button id="btnZimmetYap">Zimmet yap</button>
+        <button id="btnZimmetYapma">İptal</button>
+    </div>
+            </div>
+        </div>
+    </div>
     <script src="scripts/zimmet.js"></script>
 </body>
 </html>

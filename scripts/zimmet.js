@@ -293,9 +293,67 @@ async function getUsers() {
             throw new Error(data.Message||"Bilinmeyen hata")
         }
        return data;
+      console.log(data)
     }
     catch(err)
     {
         alert(err.message);
     }
 }
+let userId=null;
+document.getElementById("btnZimmetEkle").addEventListener("click",async()=>{
+    if(!selectedUrunId) return alert("ürün seçiniz");
+    document.getElementById("userModal").style.display = "block";
+    const users= await getUsers();
+    if(!users) return;
+    const tbody=document.querySelector("#userListesi tbody");
+    tbody.innerHTML="";
+    users.forEach(u=>
+    {
+        const tr=document.createElement("tr");
+         
+        tr.innerHTML=`
+            <td>${u.userId}</td>
+            <td>${u.userName}</td>
+            <td>${u.userRole}</td>
+        `;
+        tr.dataset.userId = u.userId;
+            tr.addEventListener("click",()=>
+            {
+               userId=u.userId; 
+            })
+        tbody.appendChild(tr);    
+    })
+    document.getElementById("btnZimmetYap").addEventListener("click",async()=>
+    {
+        const unit=document.getElementById("zimmetInsertUnit").value;
+        if(unit<=0) return alert("ürün miktarı giriniz");
+        try
+        {// devam edilcel step 1
+            const istek = await fetch(`http://localhost:1000/ZimmetDemirbas/ZimmetKisiler`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userId: userId,
+                procudtId: selectedUrunId,
+                unit: unit
+                })
+            });
+
+            
+            if(!istek.ok){
+                const data= await istek.json();
+                throw new Error(data.Message||"bilinmeyen hata")
+            }
+            else
+            {
+                alert("Zimmet işlemi gerçekleşti!")
+                ürünListesiGetir();
+            }
+        }
+        catch(err)
+        {
+            alert(err.message)
+        }
+    })
+})
