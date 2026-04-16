@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     await ürünListesiGetir();
+    await ZimmetDetayTabloDoldur();
 });
 
 async function ürünListesiGetir() {
@@ -374,3 +375,65 @@ document.getElementById("btnZimmetEkle").addEventListener("click",async()=>{
     });
     })
 })
+
+async function DetayliZimmetListesiGetir() {
+    try
+    {
+        const istek= await fetch(`http://localhost:1000/ZimmetDemirbas/ZimmetDetayListesi`);
+        const data= await istek.json();
+        if(!istek.ok)
+        {
+            throw new Error(data.Message ||"Bilinmeyen hata");
+        }
+        else
+        {
+            return data;
+        }   
+    }
+    catch(err)
+    {
+        alert(err.message)
+    }
+}
+
+async function ZimmetDetayTabloDoldur()
+{
+    const detay = await DetayliZimmetListesiGetir();
+    const tbody = document.querySelector("#detayliZimmetListesi tbody");
+    
+    tbody.innerHTML = ""
+    
+    detay.forEach(d =>  
+    {
+        const tr = document.createElement("tr");
+        tr.dataset.detayid = d.dosyaId; 
+        tr.innerHTML = `
+            <td>${d.dosyaId}</td>
+            <td>${d.zimmetKisiAd}</td>
+            <td>${d.zimmetKisiEmail}</td>
+            <td>${d.kisiRol}</td>
+            <td>${d.urunAd}</td>
+            <td>${d.model}</td>
+            <td>${d.urunKategoriAd}</td>
+            <td>${d.zimmetMiktar}</td>
+            <td>${d.zimmetTarih}</td>
+        `;
+        tbody.append(tr);
+    });
+}
+let selectedDetayId;
+
+document.getElementById("detayliZimmetListesi").addEventListener("click", e =>
+{
+    const tr = e.target.closest("tr");
+    if (!tr) return;
+
+    document.querySelectorAll("#detayliZimmetListesi tbody tr").forEach(x =>  
+    {
+        x.style.background = "";
+    });
+
+    tr.style.background = "#ddd";  
+   selectedDetayId = tr.dataset.detayid;
+    //console.log(selectedDetayId);
+});
