@@ -19,6 +19,8 @@ async function ürünListesiGetir() {
                 <td>${x.urunKategori}</td>
                 <td>${x.urunMarka}</td>
                 <td>${x.urunModel}</td>
+                <td>${x.unit}</td>
+                
             `;
             tbody.appendChild(tr);
         });
@@ -320,6 +322,7 @@ document.getElementById("btnZimmetEkle").addEventListener("click",async()=>{
         tr.dataset.userId = u.userId;
             tr.addEventListener("click",()=>
             {
+                tr.style.background = "#ddd";
                userId=u.userId; 
             })
         tbody.appendChild(tr);    
@@ -329,7 +332,7 @@ document.getElementById("btnZimmetEkle").addEventListener("click",async()=>{
         const unit=document.getElementById("zimmetInsertUnit").value;
         if(unit<=0) return alert("ürün miktarı giriniz");
         try
-        {// devam edilcel step 1
+        {
             const istek = await fetch(`http://localhost:1000/ZimmetDemirbas/ZimmetKisiler`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -349,11 +352,25 @@ document.getElementById("btnZimmetEkle").addEventListener("click",async()=>{
             {
                 alert("Zimmet işlemi gerçekleşti!")
                 ürünListesiGetir();
+                
             }
         }
         catch(err)
         {
             alert(err.message)
         }
+        finally
+        {
+            document.getElementById("userModal").style.display = "none";
+        }
+    })
+    document.getElementById("btnZimmetYapma").addEventListener("click",()=>
+    {
+        userId="";
+        procudtId=";"
+        document.getElementById("userModal").style.display = "none";
+          document.querySelectorAll("#zimmetListesi tbody tr").forEach(p => {
+        p.style.background = "";
+    });
     })
 })
