@@ -437,3 +437,21 @@ document.getElementById("detayliZimmetListesi").addEventListener("click", e =>
    selectedDetayId = tr.dataset.detayid;
     //console.log(selectedDetayId);
 });
+
+document.getElementById("excelExportBtn").addEventListener("click", async () =>
+{
+    debugger;
+    const istek = await fetch(`http://localhost:1000/ZimmetDemirbas/export-excel-zimmetkisiler`);
+    
+    if (!istek.ok) return alert("Excel oluşturulamadı!");
+
+    const blob = await istek.blob();
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `Zimmetler_${new Date().toISOString().slice(0,10)}.xlsx`;
+    a.click();
+    
+    URL.revokeObjectURL(url);
+});
