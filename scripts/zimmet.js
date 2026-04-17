@@ -440,7 +440,7 @@ document.getElementById("detayliZimmetListesi").addEventListener("click", e =>
 
 document.getElementById("excelExportBtn").addEventListener("click", async () =>
 {
-    debugger;
+    //debugger;
     const istek = await fetch(`http://localhost:1000/ZimmetDemirbas/export-excel-zimmetkisiler`);
     
     if (!istek.ok) return alert("Excel oluşturulamadı!");
@@ -455,3 +455,52 @@ document.getElementById("excelExportBtn").addEventListener("click", async () =>
     
     URL.revokeObjectURL(url);
 });
+
+document.getElementById("btnZimmetIdae").addEventListener("click",()=>{
+    if(!selectedDetayId) return alert("İade edilecek zimmeti seçiniz!!");
+    document.getElementById("iadeModal").style.display="block";
+    document.getElementById("btnİadeIptal").addEventListener("click",()=>{
+        selectedDetayId=null;
+        document.getElementById("iadeModal").style.display="none";
+        document.querySelectorAll("#detayliZimmetListesi tbody tr").forEach(x =>  
+    {
+        x.style.background = "";
+    });
+    })
+    document.getElementById("btnİadeEvet").addEventListener("click",async ()=>
+    {
+        try
+        {
+            let iadeMiktar = parseFloat(document.getElementById("txtİdaeMiktar").value);
+            if (isNaN(iadeMiktar) || iadeMiktar <= 0) 
+            return alert("İade Miktarı sıfırdan büyük olmalıdır");
+        const istek= await fetch(`http://localhost:1000/ZimmetDemirbas/zimmetiade?dosyaid=${selectedDetayId}&miktar=${iadeMiktar}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" }
+        })
+        if(!istek.ok)
+        {
+            const data= await istek.json();
+            throw new Error(data.Message ||"Bilinmeyen hata")
+        }
+        else
+        {
+            alert("İade Gerçekleşti")
+        }
+        selectedDetayId=null;
+        document.getElementById("iadeModal").style.display="none";
+        document.querySelectorAll("#detayliZimmetListesi tbody tr").forEach(x =>  
+        {
+             x.style.background = "";
+        });
+        }
+        catch(err)
+        {
+            alert(err.message)
+        }
+        finally
+        {
+            await ürünListesiGetir();
+        }
+    })
+})
