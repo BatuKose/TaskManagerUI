@@ -1,0 +1,726 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap');
+
+:root {
+  --primary:       #1a3fa8;
+  --primary-dark:  #122d80;
+  --primary-light: #2a55c8;
+  --accent:        #3b82f6;
+  --accent-glow:   rgba(59,130,246,0.18);
+  --danger:        #ef4444;
+  --success:       #22c55e;
+  --warning:       #f59e0b;
+  --bg:            #f0f4fb;
+  --surface:       #ffffff;
+  --surface2:      #f8faff;
+  --border:        #dde5f4;
+  --text:          #1e293b;
+  --text-muted:    #64748b;
+  --shadow-sm:     0 1px 4px rgba(26,63,168,.08);
+  --shadow-md:     0 4px 20px rgba(26,63,168,.12);
+  --shadow-lg:     0 8px 40px rgba(26,63,168,.18);
+  --radius:        12px;
+  --radius-sm:     8px;
+  --transition:    0.22s cubic-bezier(.4,0,.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── PAGE HEADER ─────────────────────────────────────── */
+.page-header {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%, var(--primary-light) 100%);
+  padding: 22px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.page-header h1 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -.02em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-header .header-meta {
+  color: rgba(255,255,255,.8);
+  font-size: .85rem;
+  font-weight: 500;
+}
+
+/* ── MAIN LAYOUT ─────────────────────────────────────── */
+.page-body {
+  padding: 24px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* ── TOOLBAR ──────────────────────────────────────────── */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 14px;
+  border-right: 1px solid var(--border);
+}
+.toolbar-group:last-child {
+  border-right: none;
+  padding-right: 0;
+  margin-left: auto;
+}
+
+/* ── TOGGLE ───────────────────────────────────────────── */
+.toggle-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+.toggle-wrap input[type="checkbox"] { display: none; }
+
+.toggle-track {
+  width: 40px; height: 22px;
+  background: var(--border);
+  border-radius: 99px;
+  position: relative;
+  transition: background var(--transition);
+  flex-shrink: 0;
+}
+.toggle-track::after {
+  content: '';
+  position: absolute;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  top: 3px; left: 3px;
+  transition: transform var(--transition), box-shadow var(--transition);
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+.toggle-wrap input:checked + .toggle-track { background: var(--primary); }
+.toggle-wrap input:checked + .toggle-track::after { transform: translateX(18px); }
+
+/* ── BASE BUTTON ──────────────────────────────────────── */
+/* Applies to both .btn class and bare <button> elements */
+.btn,
+button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .83rem;
+  font-weight: 600;
+  padding: 8px 15px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+  letter-spacing: .01em;
+  text-decoration: none;
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.btn svg, button svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+/* ── VARIANT CLASSES ──────────────────────────────────── */
+.btn-primary {
+  background: var(--primary) !important;
+  color: #fff !important;
+  border-color: var(--primary) !important;
+}
+.btn-primary:hover {
+  background: var(--primary-light) !important;
+  border-color: var(--primary-light) !important;
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  color: var(--primary);
+  border-color: var(--border);
+  background: transparent;
+}
+.btn-outline:hover {
+  background: var(--surface2);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  color: var(--danger);
+  border-color: #fecaca;
+  background: transparent;
+}
+.btn-danger:hover {
+  background: #fef2f2;
+  box-shadow: 0 0 0 3px rgba(239,68,68,.1);
+  transform: translateY(-1px);
+}
+
+.btn-success {
+  color: var(--success);
+  border-color: #bbf7d0;
+  background: transparent;
+}
+.btn-success:hover {
+  background: #f0fdf4;
+  box-shadow: 0 0 0 3px rgba(34,197,94,.1);
+  transform: translateY(-1px);
+}
+
+.btn-warning {
+  color: #d97706;
+  border-color: #fde68a;
+  background: transparent;
+}
+.btn-warning:hover {
+  background: #fffbeb;
+  box-shadow: 0 0 0 3px rgba(245,158,11,.1);
+  transform: translateY(-1px);
+}
+
+/* ── TOOLBAR BUTTONS (ID-based) ───────────────────────── */
+
+/* Kategori Ekle — outline blue */
+#btnKategoriEkle {
+  color: var(--primary);
+  border-color: var(--border);
+}
+#btnKategoriEkle:hover {
+  background: var(--surface2);
+  border-color: var(--accent);
+  color: var(--primary);
+  transform: translateY(-1px);
+}
+
+/* Ürün Ekle — solid primary */
+#btnUrunEkle {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+#btnUrunEkle:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+/* Ürün Sil — danger */
+#btnUrunSil {
+  color: var(--danger);
+  border-color: #fecaca;
+}
+#btnUrunSil:hover {
+  background: #fef2f2;
+  box-shadow: 0 0 0 3px rgba(239,68,68,.1);
+  transform: translateY(-1px);
+}
+
+/* Zimmet Yap — solid primary */
+#btnZimmetEkle {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+#btnZimmetEkle:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+/* Excel Export — success green */
+#excelExportBtn {
+  color: #166534;
+  border-color: #bbf7d0;
+}
+#excelExportBtn:hover {
+  background: #f0fdf4;
+  box-shadow: 0 0 0 3px rgba(34,197,94,.1);
+  transform: translateY(-1px);
+}
+
+/* Zimmet İade — outline */
+#btnZimmetIdae {
+  color: var(--primary);
+  border-color: var(--border);
+}
+#btnZimmetIdae:hover {
+  background: var(--surface2);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+/* Zimmet Durum — warning amber */
+#btnZimmetDurum {
+  color: #d97706;
+  border-color: #fde68a;
+}
+#btnZimmetDurum:hover {
+  background: #fffbeb;
+  box-shadow: 0 0 0 3px rgba(245,158,11,.1);
+  transform: translateY(-1px);
+}
+
+/* ── SECTION CARDS ───────────────────────────────────── */
+.section-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  animation: fadeSlide .35s ease both;
+}
+.section-card:nth-child(2) { animation-delay: .06s; }
+.section-card:nth-child(3) { animation-delay: .12s; }
+.section-card:nth-child(4) { animation-delay: .18s; }
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.section-header h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: .92rem;
+  font-weight: 700;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-header h3::before {
+  content: '';
+  display: block;
+  width: 4px; height: 18px;
+  background: linear-gradient(to bottom, var(--primary), var(--accent));
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.section-header .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge {
+  background: var(--accent-glow);
+  color: var(--primary);
+  font-size: .72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 99px;
+  letter-spacing: .02em;
+}
+
+/* ── TABLES ──────────────────────────────────────────── */
+.table-wrap {
+  overflow-x: auto;
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.table-wrap::-webkit-scrollbar { width: 6px; height: 6px; }
+.table-wrap::-webkit-scrollbar-track { background: transparent; }
+.table-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+.table-wrap::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+table { width: 100%; border-collapse: collapse; font-size: .83rem; }
+
+thead { position: sticky; top: 0; z-index: 2; }
+
+thead th {
+  background: #f0f4fb;
+  color: var(--primary-dark);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  padding: 11px 16px;
+  border-bottom: 1.5px solid var(--border);
+  white-space: nowrap;
+  text-align: left;
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition);
+  cursor: pointer;
+}
+tbody tr:hover { background: #f0f6ff; }
+tbody tr:last-child { border-bottom: none; }
+
+/* Selected row — catches JS .style.background = "#ddd" */
+tbody tr.selected,
+tbody tr[style*="background: rgb(221"],
+tbody tr[style*="background:#ddd"],
+tbody tr[style*="background: #ddd"] {
+  background: rgba(59,130,246,.08) !important;
+  border-left: 3px solid var(--accent) !important;
+}
+
+tbody td {
+  padding: 10px 16px;
+  color: var(--text);
+  vertical-align: middle;
+}
+
+/* ── STATUS BADGES ───────────────────────────────────── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: .72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+.status-badge::before {
+  content: '';
+  display: block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .75;
+}
+
+.status-1 { background: #fef9c3; color: #a16207; }
+.status-2 { background: #dbeafe; color: #1e40af; }
+.status-3 { background: #dcfce7; color: #166534; }
+.status-4 { background: #fee2e2; color: #991b1b; }
+.status-5 { background: #fce7f3; color: #9d174d; }
+.status-0 { background: var(--bg); color: var(--text-muted); }
+
+/* ── ACTION BAR (standalone buttons below tables) ────── */
+.action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  border-top: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+/* ── MODAL OVERLAYS ───────────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,23,42,.45);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.active { display: flex; }
+
+/* JS-opened modals (style="display: block") */
+#KategoriInsertModal[style*="display: block"],
+#KategoriInsertModal[style*="display:block"],
+#productInsertModal[style*="display: block"],
+#productInsertModal[style*="display:block"],
+#UrunSilmeSoruModal[style*="display: block"],
+#UrunSilmeSoruModal[style*="display:block"],
+#userModal[style*="display: block"],
+#userModal[style*="display:block"],
+#iadeModal[style*="display: block"],
+#iadeModal[style*="display:block"],
+#DurumDegisiklikModal[style*="display: block"],
+#DurumDegisiklikModal[style*="display:block"] {
+  position: fixed !important;
+  inset: 0;
+  background: rgba(15,23,42,.48) !important;
+  backdrop-filter: blur(5px);
+  z-index: 200;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  animation: overlayIn .2s ease;
+}
+
+@keyframes overlayIn { from { opacity:0; } to { opacity:1; } }
+
+/* ── MODAL BOX ───────────────────────────────────────── */
+.modal-box,
+#KategoriInsertModal  > div,
+#productInsertModal   > div,
+#UrunSilmeSoruModal   > div,
+#userModal            > div,
+#iadeModal            > div,
+#DurumDegisiklikModal > div {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 28px 30px;
+  width: min(460px, 92vw);
+  box-shadow: var(--shadow-lg);
+  animation: modalIn .25s cubic-bezier(.34,1.56,.64,1);
+  border: 1px solid var(--border);
+}
+
+#userModal > div { width: min(640px, 92vw); }
+
+@keyframes modalIn {
+  from { opacity:0; transform: scale(.93) translateY(14px); }
+  to   { opacity:1; transform: scale(1)   translateY(0); }
+}
+
+/* Modal titles */
+#KategoriInsertModal  h3,
+#productInsertModal   h3,
+#UrunSilmeSoruModal   h3,
+#userModal            h3,
+#iadeModal            h4,
+#DurumDegisiklikModal h4,
+.modal-box h3,
+.modal-box h4 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 20px;
+  padding-bottom: 13px;
+  border-bottom: 1px solid var(--border);
+}
+
+#UrunSilmeSoruModal h3 { color: var(--danger); border-bottom-color: #fecaca; }
+
+/* Modal form groups */
+#KategoriInsertModal > div > div,
+#productInsertModal  > div > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 14px;
+}
+
+/* Labels */
+#KategoriInsertModal label,
+#productInsertModal  label,
+#userModal           label,
+#iadeModal           label,
+.modal-box label {
+  font-size: .76rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+/* Inputs & selects */
+#KategoriInsertModal  input,
+#KategoriInsertModal  select,
+#productInsertModal   input,
+#productInsertModal   select,
+#userModal            input,
+#iadeModal            input,
+#DurumDegisiklikModal select,
+.modal-box input,
+.modal-box select {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .88rem;
+  padding: 10px 13px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface2);
+  color: var(--text);
+  outline: none;
+  width: 100%;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+#KategoriInsertModal  input:focus,
+#KategoriInsertModal  select:focus,
+#productInsertModal   input:focus,
+#productInsertModal   select:focus,
+#userModal            input:focus,
+#iadeModal            input:focus,
+#DurumDegisiklikModal select:focus,
+.modal-box input:focus,
+.modal-box select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  background: #fff;
+}
+
+/* Modal button rows (last child div) */
+#KategoriInsertModal  > div > div:last-child,
+#productInsertModal   > div > div:last-child,
+#UrunSilmeSoruModal   > div > div:last-child,
+#userModal            > div > div:last-child,
+#iadeModal            > div:last-child,
+#DurumDegisiklikModal > div:last-child,
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── MODAL ACTION BUTTONS ────────────────────────────── */
+#btnKategoriInsertKaydet,
+#btnUrunInsertKaydet,
+#btnZimmetYap,
+#btnİadeEvet,
+#btnDurumEvet {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+#btnKategoriInsertKaydet:hover,
+#btnUrunInsertKaydet:hover,
+#btnZimmetYap:hover,
+#btnİadeEvet:hover,
+#btnDurumEvet:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+#btnUrunSilEvet {
+  background: var(--danger);
+  color: #fff;
+  border-color: var(--danger);
+}
+#btnUrunSilEvet:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(239,68,68,.15);
+  transform: translateY(-1px);
+}
+
+#btnKategoriInsertIptal,
+#btnUrunInsertIptal,
+#btnZimmetYapma,
+#btnUrunSilHayir,
+#btnİadeIptal,
+#btnDurumHayir {
+  background: transparent;
+  color: var(--text-muted);
+  border-color: var(--border);
+}
+#btnKategoriInsertIptal:hover,
+#btnUrunInsertIptal:hover,
+#btnZimmetYapma:hover,
+#btnUrunSilHayir:hover,
+#btnİadeIptal:hover,
+#btnDurumHayir:hover {
+  background: var(--surface2);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+/* ── USER TABLE ───────────────────────────────────────── */
+#userListesi { width: 100%; margin-bottom: 16px; }
+#userListesi thead th { font-size: .72rem; padding: 10px 14px; }
+#userListesi tbody tr:hover { background: #f0f6ff; }
+#userListesi tbody tr[style*="#ddd"],
+#userListesi tbody tr[style*="rgb(221"] {
+  background: rgba(59,130,246,.08) !important;
+  border-left: 3px solid var(--accent) !important;
+}
+
+/* Avatar */
+.avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.role-chip {
+  display: inline-block;
+  background: var(--accent-glow);
+  color: var(--primary);
+  font-size: .72rem;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 99px;
+  border: 1px solid rgba(59,130,246,.2);
+}
+
+/* ── EMPTY STATE ─────────────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
+  gap: 10px;
+}
+.empty-state svg { opacity: .25; width: 44px; height: 44px; }
+.empty-state p   { font-size: .88rem; }
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media (max-width: 900px) {
+  .page-body  { padding: 16px; gap: 16px; }
+  .page-header { padding: 16px; }
+  .toolbar    { padding: 10px 14px; gap: 6px; }
+  .btn, button { padding: 7px 11px; font-size: .79rem; }
+  [id$="Modal"] > div { padding: 20px 18px; }
+}
+
+@media (max-width: 600px) {
+  #userModal > div { width: 96vw; }
+  thead th         { font-size: .67rem; padding: 9px 10px; }
+  tbody td         { padding: 9px 10px; font-size: .8rem; }
+}
