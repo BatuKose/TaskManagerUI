@@ -123,6 +123,7 @@
     <div>
         <button id="excelExportBtn">Zimmet Detay excele aktar</button>
         <button id="btnZimmetIdae">Zimmet İdae</button>
+        <button id="btnZimmetDurum">Zimmet Durum degisikliği</button>
     </div>
     <div>
      <!-- detaylı Zimmet Listesi -->
@@ -138,11 +139,13 @@
                 <th>Ürün kategori</th>
                 <th>Ürün Miktari</th>
                 <th>Zimmet tarihi</th>
+                <th>Zimmet Durumu</th>
             </tr>
         </thead>
         <tbody></tbody>
     </table>
     </div>
+    <!--İdae modal-->
     <div style="display:none;" id="iadeModal">
         <div>
             <h4>İade Edilsin mi?</h4>
@@ -154,6 +157,23 @@
         <div>
             <button id="btnİadeEvet">İade et</button>
             <button id="btnİadeIptal">İptal</button>
+        </div>
+    </div>
+    <!--durum değişliği modal-->
+    <div id="DurumDegisiklikModal" style="display: none;">
+        <div>
+            <h4>Zimmet durumu Güncelle</h4>
+        </div>
+        <div>
+            <select id="durumEmum">
+            <option value="1">Bekliyor</option>
+            <option value="2">Onaylandı</option>
+            <option value="3">İptal</option>
+        </select>
+        </div>
+        <div>
+            <button id="btnDurumEvet">Evet</button>
+            <button id="btnDurumHayir">Hayır</button>
         </div>
     </div>
     <script src="scripts/zimmet.js"></script>

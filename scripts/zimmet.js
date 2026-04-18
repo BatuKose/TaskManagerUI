@@ -405,6 +405,23 @@ async function ZimmetDetayTabloDoldur()
     
     detay.forEach(d =>  
     {
+        let durumUi=null;
+        if(d.durum==1)
+        {
+            durumUi="Bekliyor"
+        }
+        else if(d.durum==2)
+        { 
+            durumUi="Onaylandı"
+        }
+          else if(d.durum==3)
+        { 
+            durumUi="İptal"
+        }
+        else
+        {
+            durumUi="Tanımsız"
+        }
         const tr = document.createElement("tr");
         tr.dataset.detayid = d.dosyaId; 
         tr.innerHTML = `
@@ -417,6 +434,7 @@ async function ZimmetDetayTabloDoldur()
             <td>${d.urunKategoriAd}</td>
             <td>${d.zimmetMiktar}</td>
             <td>${d.zimmetTarih}</td>
+            <td>${durumUi}</td>
         `;
         tbody.append(tr);
     });
@@ -501,6 +519,61 @@ document.getElementById("btnZimmetIdae").addEventListener("click",()=>{
         finally
         {
             await ürünListesiGetir();
+             ZimmetDetayTabloDoldur();
         }
+    })
+})
+
+document.getElementById("btnZimmetDurum").addEventListener("click",async()=>
+{
+    if(!selectedDetayId) return alert("Zimmet seçiniz");
+    document.getElementById("DurumDegisiklikModal").style.display="block";
+    document.getElementById("btnDurumHayir").addEventListener("click",()=>{
+        document.getElementById("DurumDegisiklikModal").style.display="none";
+        selectedDetayId=null;
+        document.querySelectorAll("#detayliZimmetListesi tbody tr").forEach(x =>  
+        {
+            x.style.background = "";
+        });
+    })
+
+    document.getElementById("btnDurumEvet").addEventListener("click", async ()=>{
+        try
+        {
+
+        let managerid=5;
+        let durum = parseInt(document.getElementById("durumEmum").value);
+        const istek= await fetch(`http://localhost:1000/ZimmetDemirbas/zimmetDurumDegisikligi?id=${selectedDetayId}&managerid=${managerid}&durum=${durum}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" }
+        })
+
+        if(!istek.ok)
+        {
+            const data= await istek.json();
+            throw new Error(data.Message ||"Bilinmeyen hata")
+        }
+        else
+        {
+            alert("zimmet durumu değişti");
+        }
+        document.getElementById
+        ("DurumDegisiklikModal").style.display="none";
+        selectedDetayId=null;
+        document.querySelectorAll("#detayliZimmetListesi tbody tr").forEach(x =>  
+        {
+            x.style.background = "";
+        });
+        }
+        catch(err)
+        {
+            alert(err.message)
+        }
+        finally
+        {
+            await ürünListesiGetir();
+            ZimmetDetayTabloDoldur();
+        }
+        
     })
 })
